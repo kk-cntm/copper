@@ -1,0 +1,5 @@
+# Directories
+*.xcworkspace
+**/*.xcodeproj
+bin
+bin-int
