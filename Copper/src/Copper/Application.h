@@ -9,7 +9,10 @@ public:
     Application() = default;
     virtual ~Application() = default;
     
-    int Run();
+    virtual int Run();
 };
+
+// to be implemented by client
+Application* CreateApplication();
 
 }
