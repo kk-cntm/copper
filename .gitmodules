@@ -1,0 +1,3 @@
+[submodule "Copper/vendor/spdlog"]
+	path = Copper/vendor/spdlog
+	url = git@github.com:gabime/spdlog.git

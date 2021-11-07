@@ -26,25 +26,24 @@ project "Copper"
         "%{prj.name}/src/**.cpp"
     }
     
-    -- external header
-    -- includes
-    -- {
-
-    -- }
+    includedirs
+    {
+        "%{prj.name}/vendor/spdlog/include"
+    }
 
     filter "system:macosx"
         systemversion "latest"
+
+        xcodebuildsettings
+        {
+            ["ALWAYS_SEARCH_USER_PATHS"] = "YES"
+        }
 
         defines
         {
             "CPR_PLATFORM_MACOS"
         }
 
-        -- postbuildcommands
-        -- {
-        --     ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
-        -- }
-    
     filter "configurations:Debug"
         defines "CPR_DEBUG"
         symbols "On"
@@ -75,7 +74,8 @@ project "Sandbox"
     
     includedirs
     {
-        "Copper/src"
+        "Copper/src",
+        "Copper/vendor/spdlog/include"
     }
 
     links
@@ -85,14 +85,11 @@ project "Sandbox"
 
     filter "system:macosx"
         systemversion "latest"
-        
-        -- enables angled include for user defined headers
-        -- xcodebuildsettings = { ["ALWAYS_SEARCH_USER_PATHS"] = "YES" }
 
-        -- defines
-        -- {
-
-        -- }
+        xcodebuildsettings
+        {
+            ["ALWAYS_SEARCH_USER_PATHS"] = "YES"
+        }
     
     filter "configurations:Debug"
         defines "CPR_DEBUG"
