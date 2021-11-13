@@ -2,10 +2,6 @@
 
 #include "Core.h"
 
-#include <string>
-#include <functional>
-#include <iostream>
-
 namespace Copper
 {
 

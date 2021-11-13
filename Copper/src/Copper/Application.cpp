@@ -1,7 +1,7 @@
+#include "cprpch.h"
 #include "Application.h"
 #include "Event/ApplicationEvent.h"
 #include "Log.h"
-#include <stdio.h>
 
 namespace Copper
 {

@@ -20,6 +20,9 @@ project "Copper"
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+    pchheader "src/cprpch.h"
+    pchsource "Copper/src/cprpch.cpp"
+
     files
     {
         "%{prj.name}/src/**.h",
@@ -28,7 +31,7 @@ project "Copper"
     
     includedirs
     {
-        "%{prj.name}/src/",
+        "%{prj.name}/src",
         "%{prj.name}/vendor/spdlog/include"
     }
 
