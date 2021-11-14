@@ -21,6 +21,13 @@ public:
     virtual void SetVSync(bool enabled) override;
     virtual bool IsVSync() const override;
 private:
+    static void OnGLFWMouseButton(GLFWwindow* window, int button, int actions, int mode);
+    static void OnGLFWMouseMove(GLFWwindow* window, double x, double y);
+    static void OnGLFWWindowClose(GLFWwindow* window);
+    static void OnGLFWWindowResize(GLFWwindow* window, int width, int height);
+    static void OnGLFWKey(GLFWwindow* window, int key, int scancode, int action, int mods);
+    static void OnGLFWError(int error, const char* description);
+
     virtual void Init(const WindowProps& props);
     virtual void Shutdown();
     
@@ -32,7 +39,7 @@ private:
         unsigned int Height;
         std::string Title;
         bool VSync;
-        EventCallbackFn callback;
+        EventCallbackFn EventCallback;
     };
     
     WindowData m_Data;

@@ -18,7 +18,7 @@ public:
     std::string ToString() const override
     {
         std::stringstream ss;
-        ss << "MouseModedEvent: (" << m_X, ", " << m_Y << ")";
+        ss << "MouseModedEvent: (" << m_X << ", " << m_Y << ")";
         return ss.str();
     }
     
@@ -32,8 +32,8 @@ class MouseScrollEvent : public Event
 {
 public:
     MouseScrollEvent(float xOffset, float yOffset)
-       : m_XOffset(x),
-         m_YOffset(y) {}
+       : m_XOffset(xOffset),
+         m_YOffset(yOffset) {}
 
     inline float GetOffsetX() { return m_XOffset; }
     inline float GetOffsetY() { return m_YOffset; }
@@ -41,7 +41,7 @@ public:
     std::string ToString() const override
     {
         std::stringstream ss;
-        ss << "MouseScrollEvent: " << m_XOffset, ", " << m_Y;
+        ss << "MouseScrollEvent: " << m_XOffset << ", " << m_YOffset;
         return ss.str();
     }
 
@@ -69,7 +69,7 @@ protected:
 class MouseButtonPressedEvent : public MouseButtonEvent
 {
 public:
-    MouseButtonReleasedEvent(int button)
+    MouseButtonPressedEvent(int button)
        : MouseButtonEvent(button) {}
     
     std::string ToString() const override

@@ -6,9 +6,12 @@
 namespace Copper
 {
 
+#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
+
 Application::Application()
 {
     m_Window = std::unique_ptr<Window>(Window::Create());
+    m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 }
 
 int Application::Run()
@@ -28,6 +31,8 @@ void Application::OnEvent(Event& event)
 {
     EventDispatcher dispatcher(event);
 
+    dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+
     CPR_CORE_TRACE("{0}", event);
 
     for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
@@ -36,6 +41,13 @@ void Application::OnEvent(Event& event)
         if (event.IsHandled())
             break;
     }
+}
+
+bool Application::OnWindowClose(WindowCloseEvent& event)
+{
+    m_Running = false;
+
+    return true;
 }
 
 void Application::PushLayer(Layer* layer)
