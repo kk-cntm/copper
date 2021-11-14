@@ -1,5 +1,5 @@
 workspace "Copper"
-    architecture "x64"
+    architecture "ARM64"
 
     configurations
     {
@@ -8,13 +8,18 @@ workspace "Copper"
         "Dist"
     }
 
+IncludeDir = {}
+IncludeDir["GLFW"] = "Copper/vendor/GLFW/include"
+
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+
+include "Copper/vendor/GLFW"
 
 project "Copper"
     location "Copper"
     language "C++"
     cppdialect "C++17"
-    kind "StaticLib"
+    kind "SharedLib"
     staticruntime "Off"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
@@ -32,7 +37,13 @@ project "Copper"
     includedirs
     {
         "%{prj.name}/src",
-        "%{prj.name}/vendor/spdlog/include"
+        "%{prj.name}/vendor/spdlog/include",
+        "%{IncludeDir.GLFW}"
+    }
+
+    links
+    {
+        "GLFW"
     }
 
     filter "system:macosx"
@@ -40,7 +51,17 @@ project "Copper"
 
         xcodebuildsettings
         {
-            ["ALWAYS_SEARCH_USER_PATHS"] = "YES"
+            ["ALWAYS_SEARCH_USER_PATHS"] = "YES",
+            -- the path where project it links to will search dynamic lib
+            ["DYLIB_INSTALL_NAME_BASE"] = "../Copper"
+        }
+
+        links
+        {
+            "CoreFoundation.framework",
+            "IOKit.framework",
+            "Cocoa.framework",
+            "OpenGL.framework"
         }
 
         defines
@@ -49,7 +70,11 @@ project "Copper"
         }
 
     filter "configurations:Debug"
-        defines "CPR_DEBUG"
+        defines
+        {
+            "CPR_DEBUG",
+            "CPR_ENABLE_ASSERTS"
+        }
         symbols "On"
 
     filter "configurations:Release"
@@ -94,9 +119,13 @@ project "Sandbox"
         {
             ["ALWAYS_SEARCH_USER_PATHS"] = "YES"
         }
-    
+
     filter "configurations:Debug"
-        defines "CPR_DEBUG"
+        defines
+        {
+            "CPR_DEBUG",
+            "CPR_ENABLE_ASSERTS"
+        }
         symbols "On"
 
     filter "configurations:Release"

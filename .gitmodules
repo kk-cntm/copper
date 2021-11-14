@@ -1,3 +1,6 @@
 [submodule "Copper/vendor/spdlog"]
 	path = Copper/vendor/spdlog
 	url = git@github.com:gabime/spdlog.git
+[submodule "Copper/vendor/GLFW"]
+	path = Copper/vendor/GLFW
+	url = git@github.com:Remp/glfw.git
