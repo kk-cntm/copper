@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Window.h"
+#include "LayerStack.h"
 
 namespace Copper
 {
@@ -12,9 +13,15 @@ public:
     virtual ~Application() = default;
     
     virtual int Run();
+
+    void OnEvent(Event& event);
+
+    void PushLayer(Layer* layer);
+    void PushOverlaye(Layer* overlay);
 private:
     std::unique_ptr<Window> m_Window;
     bool m_Running = true;
+    LayerStack m_LayerStack;
 };
 
 // to be implemented by client

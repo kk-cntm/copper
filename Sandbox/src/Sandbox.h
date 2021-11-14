@@ -5,6 +5,6 @@
 class Sandbox : public Copper::Application
 {
 public:
-    Sandbox() = default;
+    Sandbox();
     ~Sandbox() = default;
 };
