@@ -4,6 +4,7 @@
 #include "Copper/Event/MouseEvent.h"
 #include "Copper/Event/ApplicationEvent.h"
 #include "Copper/Event/KeyEvent.h"
+#include "glad/glad.h"
 
 namespace Copper
 {
@@ -44,6 +45,10 @@ void MacOsWindow::Init(const WindowProps& props)
     
     m_Window = glfwCreateWindow((int)m_Data.Width, (int)m_Data.Height, m_Data.Title.c_str(), NULL, nullptr);
     glfwMakeContextCurrent(m_Window);
+
+    int gladStatus = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+    CPR_CORE_ASSERT(gladStatus, "Failed to load glad");
+
     glfwSetWindowUserPointer(m_Window, &m_Data);
 
     glfwSetErrorCallback(&MacOsWindow::OnGLFWError);

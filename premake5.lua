@@ -10,10 +10,12 @@ workspace "Copper"
 
 IncludeDir = {}
 IncludeDir["GLFW"] = "Copper/vendor/GLFW/include"
+IncludeDir["Glad"] = "Copper/vendor/glad/include"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 include "Copper/vendor/GLFW"
+include "Copper/vendor/glad"
 
 project "Copper"
     location "Copper"
@@ -38,12 +40,20 @@ project "Copper"
     {
         "%{prj.name}/src",
         "%{prj.name}/vendor/spdlog/include",
-        "%{IncludeDir.GLFW}"
+        "%{IncludeDir.GLFW}",
+        "%{IncludeDir.Glad}"
     }
 
     links
     {
-        "GLFW"
+        "GLFW",
+        "Glad"
+    }
+
+    defines
+    {
+        -- make it possible to use glad with GLFW
+        "GLFW_INCLUDE_NONE"
     }
 
     filter "system:macosx"
