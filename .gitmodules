@@ -4,3 +4,6 @@
 [submodule "Copper/vendor/GLFW"]
 	path = Copper/vendor/GLFW
 	url = git@github.com:Remp/glfw.git
+[submodule "Copper/vendor/imgui"]
+	path = Copper/vendor/imgui
+	url = git@github.com:Remp/imgui.git
