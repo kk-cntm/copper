@@ -50,6 +50,10 @@ void MacOsWindow::Init(const WindowProps& props)
     glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_TRUE);
 
     m_Window = glfwCreateWindow((int)m_Data.Width, (int)m_Data.Height, m_Data.Title.c_str(), NULL, nullptr);
+
+    // initialize framebuffer size
+    glfwGetFramebufferSize(m_Window, (int*)&m_Data.FbWidth, (int*)&m_Data.FbHeight);
+
     glfwMakeContextCurrent(m_Window);
 
     int gladStatus = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
@@ -63,12 +67,14 @@ void MacOsWindow::Init(const WindowProps& props)
     glfwSetWindowCloseCallback(m_Window, &MacOsWindow::OnGLFWWindowClose);
     glfwSetWindowSizeCallback(m_Window, &MacOsWindow::OnGLFWWindowResize);
     glfwSetCursorPosCallback(m_Window, &MacOsWindow::OnGLFWMouseMove);
+    glfwSetFramebufferSizeCallback(m_Window, &MacOsWindow::OnGLFWWindowFbResize);
 
     SetVSync(true);
 }
 
 void MacOsWindow::OnUpdate()
 {
+    glViewport(0, 0, m_Data.FbWidth, m_Data.FbHeight);
     glfwPollEvents();
     glfwSwapBuffers(m_Window);
 }
@@ -118,6 +124,7 @@ void MacOsWindow::OnGLFWMouseMove(GLFWwindow* window, double x, double y)
     WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 
     MouseMovedEvent event(x, y);
+    CPR_CORE_INFO(event);
     data.EventCallback(event);
 }
 
@@ -133,7 +140,21 @@ void MacOsWindow::OnGLFWWindowResize(GLFWwindow* window, int width, int height)
 {
     WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 
+    data.Width = width;
+    data.Height = height;
+
     WindowResizeEvent event(width, height);
+    data.EventCallback(event);
+}
+
+void MacOsWindow::OnGLFWWindowFbResize(GLFWwindow* window, int width, int height)
+{
+    WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
+
+    data.FbWidth = width;
+    data.FbWidth = height;
+
+    WindowFBResizeEvent event(width, height);
     data.EventCallback(event);
 }
 
@@ -171,6 +192,16 @@ void MacOsWindow::OnGLFWKey(GLFWwindow* window, int key, int /*scancode*/, int a
 void MacOsWindow::OnGLFWError(int error, const char* description)
 {
     CPR_CORE_ERROR("MacOsWindow::OnGLFWError: {0}, {1}", error, description);
+}
+
+std::pair<float, float> MacOsWindow::GetDPI() const
+{
+    float x = 0;
+    float y = 0;
+
+    glfwGetMonitorContentScale(glfwGetPrimaryMonitor(), &x, &y);
+
+    return std::make_pair(x, y);
 }
 
 void MacOsWindow::Shutdown()

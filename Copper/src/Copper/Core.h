@@ -19,3 +19,5 @@
     #define CPR_ASSERT
     #define CPR_CORE_ASSERT
 #endif
+
+#define CPR_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)

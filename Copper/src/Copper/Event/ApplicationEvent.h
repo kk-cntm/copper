@@ -5,16 +5,27 @@
 namespace Copper
 {
 
-class WindowResizeEvent : public Event
+class ResizeEvent : public Event
+{
+public:
+    inline unsigned int GetWidth() { return m_Width; }
+    inline unsigned int GetHeight() { return m_Height; }
+
+protected:
+    ResizeEvent(unsigned int width, unsigned int height)
+        : m_Width(width),
+          m_Height(height) {}
+
+    unsigned int m_Width;
+    unsigned int m_Height;
+};
+
+class WindowResizeEvent : public ResizeEvent
 {
 public:
     WindowResizeEvent(unsigned int width, unsigned int height)
-        : m_Width(width),
-          m_Height(height) {}
-    
-    inline unsigned int GetWidth() { return m_Width; }
-    inline unsigned int GetHeight() { return m_Height; }
-    
+        : ResizeEvent(width, height) {}
+
     std::string ToString() const override
     {
         std::stringstream ss;
@@ -24,10 +35,23 @@ public:
     
     EVENT_CLASS_CATEGORY(EventCategoryApplication)
     EVENT_CLASS_TYPE(WindowResize)
+};
 
-private:
-    unsigned int m_Width;
-    unsigned int m_Height;
+class WindowFBResizeEvent : public ResizeEvent
+{
+public:
+    WindowFBResizeEvent(unsigned int width, unsigned int height)
+        : ResizeEvent(width, height) {}
+
+    std::string ToString() const override
+    {
+        std::stringstream ss;
+        ss << "WindowFBResizeEvent: " << m_Width << ", " << m_Height;
+        return ss.str();
+    }
+
+    EVENT_CLASS_CATEGORY(EventCategoryApplication)
+    EVENT_CLASS_TYPE(WindowFbResize)
 };
 
 class WindowCloseEvent : public Event

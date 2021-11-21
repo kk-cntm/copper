@@ -17,6 +17,8 @@ public:
     inline virtual unsigned int GetWidth() const override { return m_Data.Width; };
     inline virtual unsigned int GetHeight() const override { return m_Data.Height; };
 
+    virtual std::pair<float, float> GetDPI() const override;
+
     virtual void SetEventCallback(const Window::EventCallbackFn& callback) override;
     virtual void SetVSync(bool enabled) override;
     virtual bool IsVSync() const override;
@@ -25,6 +27,7 @@ private:
     static void OnGLFWMouseMove(GLFWwindow* window, double x, double y);
     static void OnGLFWWindowClose(GLFWwindow* window);
     static void OnGLFWWindowResize(GLFWwindow* window, int width, int height);
+    static void OnGLFWWindowFbResize(GLFWwindow* window, int width, int height);
     static void OnGLFWKey(GLFWwindow* window, int key, int scancode, int action, int mods);
     static void OnGLFWError(int error, const char* description);
 
@@ -35,13 +38,15 @@ private:
     
     struct WindowData
     {
-        unsigned int Width;
-        unsigned int Height;
+        unsigned int Width = 0;
+        unsigned int Height = 0;
+        unsigned int FbWidth = 0;
+        unsigned int FbHeight = 0;
         std::string Title;
-        bool VSync;
+        bool VSync = false;
         EventCallbackFn EventCallback;
     };
-    
+
     WindowData m_Data;
 };
 

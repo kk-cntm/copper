@@ -1,9 +1,11 @@
 #include "DebugLayer.h"
+#include "Copper/Core.h"
 #include "Copper/Application.h"
 #include "Copper/Log.h"
 #include "Platform/OpenGL/ImGuiOpenGLRenderer.h"
 #include "imgui.h"
 #include "GLFW/glfw3.h"
+#include "glad/glad.h"
 
 namespace Copper
 {
@@ -58,15 +60,26 @@ void DebugLayer::OnDetach()
 
 void DebugLayer::OnEvent(Event& event)
 {
+    EventDispatcher dispatcher(event);
     
+    dispatcher.Dispatch<MouseMovedEvent>(CPR_EVENT_FN(DebugLayer::OnMouseMoveEvent));
+    dispatcher.Dispatch<MouseScrollEvent>(CPR_EVENT_FN(DebugLayer::OnMouseScrollEvent));
+    dispatcher.Dispatch<MouseButtonPressedEvent>(CPR_EVENT_FN(DebugLayer::OnMouseButtonPressEvent));
+    dispatcher.Dispatch<MouseButtonReleasedEvent>(CPR_EVENT_FN(DebugLayer::OnMouseButtonReleaseEvent));
+    dispatcher.Dispatch<KeyPressedEvent>(CPR_EVENT_FN(DebugLayer::OnKeyPressEvent));
+    dispatcher.Dispatch<KeyReleasedEvent>(CPR_EVENT_FN(DebugLayer::OnKeyReleaseEvent));
+    dispatcher.Dispatch<WindowResizeEvent>(CPR_EVENT_FN(DebugLayer::OnWindowResizeEvent));
 }
 
 void DebugLayer::OnUpdate()
 {
+    const Application& app = Application::Get();
     ImGuiIO& io = ImGui::GetIO();
 
-    const Application& app = Application::Get();
     io.DisplaySize = ImVec2(app.GetWindow().GetWidth(), app.GetWindow().GetHeight());
+
+    const auto dpi = app.GetWindow().GetDPI();
+    io.DisplayFramebufferScale = ImVec2(dpi.first, dpi.second);
 
     float time = static_cast<float>(glfwGetTime());
     io.DeltaTime = m_Time > 0 ? (time - m_Time) : (1.0f / 60.0f);
@@ -80,6 +93,68 @@ void DebugLayer::OnUpdate()
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
+bool DebugLayer::OnMouseMoveEvent(MouseMovedEvent& event)
+{
+    ImGuiIO& io = ImGui::GetIO();
+    io.MousePos = ImVec2(event.GetX(), event.GetY());
+
+    return false;
+}
+
+bool DebugLayer::OnMouseButtonPressEvent(MouseButtonPressedEvent& event)
+{
+    ImGuiIO& io = ImGui::GetIO();
+    io.MouseDown[event.GetMouseButton()] = true;
+
+    return false;
+}
+
+bool DebugLayer::OnMouseButtonReleaseEvent(MouseButtonReleasedEvent& event)
+{
+    ImGuiIO& io = ImGui::GetIO();
+    io.MouseDown[event.GetMouseButton()] = false;
+
+    return false;
+}
+
+bool DebugLayer::OnMouseScrollEvent(MouseScrollEvent& event)
+{
+    ImGuiIO& io = ImGui::GetIO();
+    io.MouseWheelH += event.GetOffsetX();
+    io.MouseWheel += event.GetOffsetY();
+
+    return false;
+}
+
+bool DebugLayer::OnKeyPressEvent(KeyPressedEvent& event)
+{
+    ImGuiIO& io = ImGui::GetIO();
+    io.KeysDown[event.GetKeyCode()] = true;
+
+    io.KeyAlt = io.KeysDown[GLFW_KEY_LEFT_ALT] || io.KeysDown[GLFW_KEY_RIGHT_ALT];
+    io.KeyCtrl = io.KeysDown[GLFW_KEY_LEFT_CONTROL] || io.KeysDown[GLFW_KEY_RIGHT_CONTROL];
+    io.KeyShift = io.KeysDown[GLFW_KEY_LEFT_SHIFT] || io.KeysDown[GLFW_KEY_RIGHT_SHIFT];
+    io.KeySuper = io.KeysDown[GLFW_KEY_LEFT_SUPER] || io.KeysDown[GLFW_KEY_RIGHT_SUPER];
+
+    return false;
+}
+
+bool DebugLayer::OnKeyReleaseEvent(KeyReleasedEvent& event)
+{
+    ImGuiIO& io = ImGui::GetIO();
+    io.KeysDown[event.GetKeyCode()] = false;
+
+    return false;
+}
+
+bool DebugLayer::OnWindowResizeEvent(WindowResizeEvent& event)
+{
+    ImGuiIO& io = ImGui::GetIO();
+    io.DisplaySize = ImVec2(event.GetWidth(), event.GetHeight());
+
+    return false;
 }
 
 }
