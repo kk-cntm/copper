@@ -90,14 +90,17 @@ project "Copper"
             "CPR_ENABLE_ASSERTS"
         }
         symbols "On"
+        runtime "Debug"
 
     filter "configurations:Release"
         defines "CPR_RELEASE"
         optimize "On"
+        runtime "Release"
 
     filter "configurations:Dist"
         defines "CPR_DIST"
         optimize "On"
+        runtime "Release"
 
 project "Sandbox"
     location "Sandbox"
@@ -141,12 +144,15 @@ project "Sandbox"
             "CPR_ENABLE_ASSERTS"
         }
         symbols "On"
+        runtime "Debug"
 
     filter "configurations:Release"
         defines "CPR_RELEASE"
         optimize "On"
+        runtime "Release"
 
     filter "configurations:Dist"
         defines "CPR_DIST"
         optimize "On"
+        runtime "Release"
         
