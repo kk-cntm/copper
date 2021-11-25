@@ -196,12 +196,53 @@ void MacOsWindow::OnGLFWError(int error, const char* description)
 
 std::pair<float, float> MacOsWindow::GetDPI() const
 {
+    // TODO: discover how to render with proper DPI when the window is splitted between 2 monitors
     float x = 0;
     float y = 0;
 
-    glfwGetMonitorContentScale(glfwGetPrimaryMonitor(), &x, &y);
+    glfwGetMonitorContentScale(GetCurrentMonitor(), &x, &y);
 
     return std::make_pair(x, y);
+}
+
+GLFWmonitor* MacOsWindow::GetCurrentMonitor() const
+{
+    int wPosX = 0;
+    int wPosY = 0;
+    int wWidth = 0;
+    int wHeight = 0;
+    int monitorsCount = 0;
+
+    glfwGetWindowPos(m_Window, &wPosX, &wPosY);
+    glfwGetWindowSize(m_Window, &wWidth, &wHeight);
+
+    GLFWmonitor** monitors = glfwGetMonitors(&monitorsCount);
+
+    int bestOverlap = 0;
+    GLFWmonitor* bestMonitor = monitorsCount > 0 ? monitors[0] : nullptr;
+
+    for (int i = 0; i < monitorsCount; ++i)
+    {
+        int mX = 0;
+        int mY = 0;
+
+        glfwGetMonitorPos(monitors[i], &mX, &mY);
+        const GLFWvidmode* mode = glfwGetVideoMode(monitors[i]);
+        int mWidth = mode->width;
+        int mHeight = mode->height;
+
+        int overlap =
+            std::max(0, std::min(wPosX + wWidth, mX + mWidth) - std::max(wPosX, mX)) *
+            std::max(0, std::min(wPosY + wHeight, mY + mHeight) - std::max(wPosY, mY));
+
+        if (overlap > bestOverlap)
+        {
+            bestOverlap = overlap;
+            bestMonitor = monitors[i];
+        }
+    }
+
+    return bestMonitor;
 }
 
 void MacOsWindow::Shutdown()

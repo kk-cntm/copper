@@ -33,7 +33,9 @@ private:
 
     virtual void Init(const WindowProps& props);
     virtual void Shutdown();
-    
+
+    GLFWmonitor* GetCurrentMonitor() const;
+
     GLFWwindow* m_Window;
     
     struct WindowData
