@@ -2,6 +2,7 @@
 
 #include "cprpch.h"
 #include "Event/Event.h"
+#include "Input.h"
 
 namespace Copper
 {
@@ -37,8 +38,13 @@ public:
     virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
     virtual void SetVSync(bool enabled) = 0;
     virtual bool IsVSync() const = 0;
-    
+
+    virtual const Input* GetInput() const = 0;
+
     static Window* Create(const WindowProps& props = WindowProps());
+
+private:
+    virtual const void* GetNativeWindow() const = 0;
 };
 
 }

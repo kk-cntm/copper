@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Copper/Window.h"
+#include "Copper/Input.h"
 #include "GLFW/glfw3.h"
 
 namespace Copper
@@ -22,6 +23,12 @@ public:
     virtual void SetEventCallback(const Window::EventCallbackFn& callback) override;
     virtual void SetVSync(bool enabled) override;
     virtual bool IsVSync() const override;
+
+    inline virtual const Input* GetInput() const override
+    {
+        return m_Input;
+    }
+
 private:
     static void OnGLFWMouseButton(GLFWwindow* window, int button, int actions, int mode);
     static void OnGLFWMouseMove(GLFWwindow* window, double x, double y);
@@ -31,13 +38,16 @@ private:
     static void OnGLFWKey(GLFWwindow* window, int key, int scancode, int action, int mods);
     static void OnGLFWError(int error, const char* description);
 
+    inline virtual const void* GetNativeWindow() const override { return m_Window; };
+
     virtual void Init(const WindowProps& props);
     virtual void Shutdown();
 
     GLFWmonitor* GetCurrentMonitor() const;
 
     GLFWwindow* m_Window;
-    
+    Input* m_Input;
+
     struct WindowData
     {
         unsigned int Width = 0;

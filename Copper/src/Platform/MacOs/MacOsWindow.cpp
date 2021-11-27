@@ -4,6 +4,7 @@
 #include "Copper/Event/MouseEvent.h"
 #include "Copper/Event/ApplicationEvent.h"
 #include "Copper/Event/KeyEvent.h"
+#include "MacOsInput.h"
 #include "glad/glad.h"
 
 namespace Copper
@@ -50,6 +51,7 @@ void MacOsWindow::Init(const WindowProps& props)
     glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_TRUE);
 
     m_Window = glfwCreateWindow((int)m_Data.Width, (int)m_Data.Height, m_Data.Title.c_str(), NULL, nullptr);
+    m_Input = new MacOsInput(m_Window);
 
     // initialize framebuffer size
     glfwGetFramebufferSize(m_Window, (int*)&m_Data.FbWidth, (int*)&m_Data.FbHeight);
@@ -247,6 +249,7 @@ GLFWmonitor* MacOsWindow::GetCurrentMonitor() const
 
 void MacOsWindow::Shutdown()
 {
+    delete m_Input;
     glfwDestroyWindow(m_Window);
 }
 
