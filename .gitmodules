@@ -7,3 +7,6 @@
 [submodule "Copper/vendor/imgui"]
 	path = Copper/vendor/imgui
 	url = git@github.com:Remp/imgui.git
+[submodule "Copper/vendor/glm"]
+	path = Copper/vendor/glm
+	url = git@github.com:g-truc/glm.git

@@ -12,6 +12,7 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "Copper/vendor/GLFW/include"
 IncludeDir["Glad"] = "Copper/vendor/glad/include"
 IncludeDir["ImGui"] = "Copper/vendor/imgui"
+IncludeDir["glm"] = "Copper/vendor/glm"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
@@ -44,7 +45,8 @@ project "Copper"
         "%{prj.name}/vendor/spdlog/include",
         "%{IncludeDir.GLFW}",
         "%{IncludeDir.Glad}",
-        "%{IncludeDir.ImGui}"
+        "%{IncludeDir.ImGui}",
+        "%{IncludeDir.glm}"
     }
 
     links
