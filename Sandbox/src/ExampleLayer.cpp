@@ -9,6 +9,7 @@ void ExampleLayer::OnEvent(Copper::Event& event)
 
 void ExampleLayer::OnUpdate()
 {
-    auto input = Copper::Application::Get().GetWindow().GetInput();
-    CPR_INFO("{0}, {1}", input->GetMousePos().first, input->GetMousePos().second);
+    const Copper::Input& input = Copper::Application::Get().GetWindow().GetInput();
+    auto [x, y] = input.GetMousePos();
+    CPR_INFO("{0}, {1}", x, y);
 }

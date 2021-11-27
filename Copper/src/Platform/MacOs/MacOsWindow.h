@@ -24,9 +24,9 @@ public:
     virtual void SetVSync(bool enabled) override;
     virtual bool IsVSync() const override;
 
-    inline virtual const Input* GetInput() const override
+    inline virtual const Input& GetInput() const override
     {
-        return m_Input;
+        return *m_Input;
     }
 
 private:
@@ -38,15 +38,13 @@ private:
     static void OnGLFWKey(GLFWwindow* window, int key, int scancode, int action, int mods);
     static void OnGLFWError(int error, const char* description);
 
-    inline virtual const void* GetNativeWindow() const override { return m_Window; };
-
     virtual void Init(const WindowProps& props);
     virtual void Shutdown();
 
     GLFWmonitor* GetCurrentMonitor() const;
 
     GLFWwindow* m_Window;
-    Input* m_Input;
+    std::unique_ptr<Input> m_Input;
 
     struct WindowData
     {
