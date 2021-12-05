@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "Event/ApplicationEvent.h"
 #include "Log.h"
+#include "ImGuiHandler.h"
 #include "glad/glad.h"
 
 namespace Copper
@@ -17,6 +18,7 @@ Application::Application()
 
     m_Window = std::unique_ptr<Window>(Window::Create());
     m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+    m_ImGuiHandler = std::unique_ptr<ImGuiHandler>(ImGuiHandler::Create(*m_Window));
 
     s_Instance = this;
 }
@@ -27,8 +29,14 @@ int Application::Run()
     {
         glClearColor(0.4f, 0.1f, 0.8f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
         for (Layer* layer : m_LayerStack)
             layer->OnUpdate();
+
+        m_ImGuiHandler->Begin();
+        for (Layer* layer : m_LayerStack)
+            layer->OnImGuiUpdate();
+        m_ImGuiHandler->End();
 
         m_Window->OnUpdate();
     }
@@ -38,11 +46,10 @@ int Application::Run()
 
 void Application::OnEvent(Event& event)
 {
-    EventDispatcher dispatcher(event);
-
-    dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
-
     CPR_CORE_TRACE("{0}", event);
+
+    EventDispatcher dispatcher(event);
+    dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 
     for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
     {

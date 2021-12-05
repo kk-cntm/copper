@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Log.h"
+
 #define BIT(x) (1 << x)
 
 #ifdef CPR_ENABLE_ASSERTS

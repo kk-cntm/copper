@@ -7,8 +7,11 @@
 namespace Copper
 {
 
+class MacOsImGuiHandler;
+
 class MacOsWindow : public Window
 {
+    friend class MacOsImGuiHandler;
 public:
     MacOsWindow(const WindowProps& props);
     virtual ~MacOsWindow();

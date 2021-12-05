@@ -36,9 +36,13 @@ project "Copper"
     files
     {
         "%{prj.name}/src/**.h",
-        "%{prj.name}/src/**.cpp"
+        "%{prj.name}/src/**.cpp",
+        "%{prj.name}/vendor/imgui/backends/imgui_impl_opengl3.cpp",
+        "%{prj.name}/vendor/imgui/backends/imgui_impl_opengl3.h",
+        "%{prj.name}/vendor/imgui/backends/imgui_impl_glfw.cpp",
+        "%{prj.name}/vendor/imgui/backends/imgui_impl_glfw.h"
     }
-    
+
     includedirs
     {
         "%{prj.name}/src",
@@ -85,6 +89,13 @@ project "Copper"
             "CPR_PLATFORM_MACOS"
         }
 
+    filter "toolset:clang"
+        linkoptions
+        {
+            -- expose imgui core interface
+            "-force_load %{prj.location}/vendor/imgui/bin/" .. outputdir .. "/ImGui/libImGui.a"
+        }
+
     filter "configurations:Debug"
         defines
         {
@@ -123,6 +134,7 @@ project "Sandbox"
     includedirs
     {
         "Copper/src",
+        "Copper/vendor",
         "Copper/vendor/spdlog/include"
     }
 

@@ -3,6 +3,7 @@
 #include "Window.h"
 #include "LayerStack.h"
 #include "Event/ApplicationEvent.h"
+#include "ImGuiHandler.h"
 
 namespace Copper
 {
@@ -26,6 +27,7 @@ public:
     inline static const Application& Get() { return *s_Instance; }
 private:
     std::unique_ptr<Window> m_Window;
+    std::unique_ptr<ImGuiHandler> m_ImGuiHandler;
     bool m_Running = true;
     LayerStack m_LayerStack;
 

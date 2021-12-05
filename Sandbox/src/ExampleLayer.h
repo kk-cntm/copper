@@ -8,6 +8,7 @@ public:
     ExampleLayer()
         : Copper::Layer("ExampleLayer") {};
 
-    void OnEvent(Copper::Event& event) override;
-    void OnUpdate() override;
+    virtual void OnEvent(Copper::Event& event) override;
+    virtual void OnUpdate() override;
+    virtual void OnImGuiUpdate() override;
 };
