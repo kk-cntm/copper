@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Core.h"
 #include "Window.h"
 #include "LayerStack.h"
 #include "Event/ApplicationEvent.h"
@@ -8,7 +9,7 @@
 namespace Copper
 {
 
-class Application
+class COPPER_API Application
 {
 public:
     Application();

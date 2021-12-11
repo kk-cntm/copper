@@ -1,12 +1,19 @@
 #pragma once
 
+#include "Core.h"
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
+
+#ifdef CPR_PLATFORM_MACOS
+#define CPR_API __attribute__((visibility("default")))
+#else
+#define CPR_API
+#endif
 
 namespace Copper
 {
 
-class Log
+class CPR_API Log
 {
 public:
     static void Init();

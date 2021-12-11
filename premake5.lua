@@ -96,6 +96,11 @@ project "Copper"
             "-force_load %{prj.location}/vendor/imgui/bin/" .. outputdir .. "/ImGui/libImGui.a"
         }
 
+        buildoptions
+        {
+            "-fvisibility=hidden"
+        }
+
     filter "configurations:Debug"
         defines
         {

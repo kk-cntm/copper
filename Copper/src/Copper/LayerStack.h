@@ -1,11 +1,12 @@
 #pragma once
 
+#include "Core.h"
 #include "Layer.h"
 
 namespace Copper
 {
 
-class LayerStack
+class COPPER_API LayerStack
 {
 public:
     LayerStack();

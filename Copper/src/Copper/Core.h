@@ -23,3 +23,9 @@
 #endif
 
 #define CPR_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
+
+#ifdef CPR_PLATFORM_MACOS
+    #define COPPER_API __attribute__((visibility("default")))
+#else
+    #define COPPER_API
+#endif
