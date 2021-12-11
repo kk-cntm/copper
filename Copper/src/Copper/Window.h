@@ -3,6 +3,7 @@
 #include "cprpch.h"
 #include "Event/Event.h"
 #include "Input.h"
+#include "Renderer/GraphicContext.h"
 
 namespace Copper
 {
@@ -12,7 +13,7 @@ struct WindowProps
     std::string Title;
     unsigned int Width;
     unsigned int Height;
-    
+
     WindowProps(const std::string& title = "Copper engine",
                 unsigned int width = 1280,
                 unsigned int height = 720)
@@ -27,7 +28,7 @@ public:
     using EventCallbackFn = std::function<void(Event&)>;
 
     virtual ~Window() {}
-    
+
     virtual void OnUpdate() = 0;
 
     virtual unsigned int GetWidth() const = 0;
@@ -42,6 +43,9 @@ public:
     virtual const Input& GetInput() const = 0;
 
     static Window* Create(const WindowProps& props = WindowProps());
+
+protected:
+    std::unique_ptr<GraphicContext> m_GraphicContext;
 };
 
 }

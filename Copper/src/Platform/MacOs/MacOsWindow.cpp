@@ -5,6 +5,7 @@
 #include "Copper/Event/ApplicationEvent.h"
 #include "Copper/Event/KeyEvent.h"
 #include "MacOsInput.h"
+#include "Platform/OpenGL/OpenGLContext.h"
 #include "glad/glad.h"
 
 namespace Copper
@@ -34,32 +35,28 @@ void MacOsWindow::Init(const WindowProps& props)
     m_Data.Height = props.Height;
 
     CPR_CORE_INFO("Creating mainwindow {0} ({1}, {2})", m_Data.Title, m_Data.Width, m_Data.Height);
-    
+
     if (!s_GLFWInitialized)
     {
         int success = glfwInit();
-        
+
         CPR_CORE_ASSERT(success, "Could not initialize GLFW");
-        
+
         s_GLFWInitialized = true;
     }
-    
+
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
     glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_TRUE);
 
     m_Window = glfwCreateWindow((int)m_Data.Width, (int)m_Data.Height, m_Data.Title.c_str(), NULL, nullptr);
+    m_GraphicContext = std::make_unique<OpenGLContext>(m_Window);
     m_Input = std::make_unique<MacOsInput>(m_Window);
 
     // initialize framebuffer size
     glfwGetFramebufferSize(m_Window, (int*)&m_Data.FbWidth, (int*)&m_Data.FbHeight);
-
-    glfwMakeContextCurrent(m_Window);
-
-    int gladStatus = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-    CPR_CORE_ASSERT(gladStatus, "Failed to load glad");
 
     glfwSetWindowUserPointer(m_Window, &m_Data);
 
@@ -78,7 +75,7 @@ void MacOsWindow::OnUpdate()
 {
     glViewport(0, 0, m_Data.FbWidth, m_Data.FbHeight);
     glfwPollEvents();
-    glfwSwapBuffers(m_Window);
+    m_GraphicContext->SwapBuffer();
 }
 
 void MacOsWindow::SetVSync(bool enabled)
