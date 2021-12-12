@@ -123,7 +123,6 @@ void MacOsWindow::OnGLFWMouseMove(GLFWwindow* window, double x, double y)
     WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 
     MouseMovedEvent event(x, y);
-    CPR_CORE_INFO(event);
     data.EventCallback(event);
 }
 
