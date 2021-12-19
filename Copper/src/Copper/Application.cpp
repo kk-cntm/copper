@@ -43,27 +43,16 @@ Application::Application()
 
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-    const char* vertexShaderSrc = "#version 410 core\n"
+    std::string vertexShaderSrc = "#version 410 core\n"
         "layout (location = 0) in vec3 aPos;\n"
         "void main() {\n"
         "gl_Position = vec4(aPos, 1.0f);\n"
         "}";
-    const char* fragmetShaderSrc = "#version 410 core\n"
+    std::string fragmetShaderSrc = "#version 410 core\n"
         "out vec4 FragColor;\n"
         "void main() { FragColor = vec4(1.0f, 0.2f, 0.6f, 1.0f); }";
 
-    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSrc, nullptr);
-    glCompileShader(vertexShader);
-
-    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmetShaderSrc, nullptr);
-    glCompileShader(fragmentShader);
-
-    m_Shader = glCreateProgram();
-    glAttachShader(m_Shader, vertexShader);
-    glAttachShader(m_Shader, fragmentShader);
-    glLinkProgram(m_Shader);
+    m_Shader = std::make_unique<OpenGLShader>(vertexShaderSrc, fragmetShaderSrc);
 
     s_Instance = this;
 }
@@ -75,7 +64,7 @@ int Application::Run()
         glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUseProgram(m_Shader);
+        m_Shader->Bind();
         glBindVertexArray(m_VertexArray);
         glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
 

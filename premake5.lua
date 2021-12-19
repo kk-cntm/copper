@@ -140,7 +140,8 @@ project "Sandbox"
     {
         "Copper/src",
         "Copper/vendor",
-        "Copper/vendor/spdlog/include"
+        "Copper/vendor/spdlog/include",
+        "%{IncludeDir.Glad}"
     }
 
     links
