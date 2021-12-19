@@ -1,3 +1,4 @@
+#include "cprpch.h"
 #include "Buffer.h"
 #include "Renderer.h"
 #include "Platform/OpenGL/OpenGLBuffer.h"

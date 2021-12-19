@@ -5,7 +5,7 @@
 #include "LayerStack.h"
 #include "Event/ApplicationEvent.h"
 #include "ImGuiHandler.h"
-#include "Platform/OpenGL/OpenGLShader.h"
+#include "Copper/Renderer/Shader.h"
 #include "Copper/Renderer/Buffer.h"
 
 namespace Copper
@@ -37,7 +37,7 @@ private:
     unsigned int m_VertexArray;
     std::unique_ptr<VertexBuffer> m_VertexBuffer;
     std::unique_ptr<IndexBuffer> m_IndexBuffer;
-    std::unique_ptr<OpenGLShader> m_Shader;
+    std::unique_ptr<Shader> m_Shader;
 
     static Application* s_Instance;
 };

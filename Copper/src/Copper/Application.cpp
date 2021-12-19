@@ -46,7 +46,7 @@ Application::Application()
         "out vec4 FragColor;\n"
         "void main() { FragColor = vec4(1.0f, 0.2f, 0.6f, 1.0f); }";
 
-    m_Shader = std::make_unique<OpenGLShader>(vertexShaderSrc, fragmetShaderSrc);
+    m_Shader = std::unique_ptr<Shader>(Shader::Create(vertexShaderSrc, fragmetShaderSrc));
 
     s_Instance = this;
 }
