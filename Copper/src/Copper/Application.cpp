@@ -23,15 +23,34 @@ Application::Application()
     glGenVertexArrays(1, &m_VertexArray);
     glBindVertexArray(m_VertexArray);
 
-    float vertices[3 * 3] = {
-        -0.5f, -0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-         0.0f,  0.5f, 0.0f
+    float vertices[] = {
+        -0.5f, -0.5f, 0.0f, 0.2f, 0.1f, 0.8f, 1.0f,
+         0.5f, -0.5f, 0.0f, 0.7f, 0.4f, 0.3f, 1.0f,
+         0.0f,  0.5f, 0.0f, 0.4f, 0.9f, 0.5f, 1.0f
     };
 
-    m_VertexBuffer = std::unique_ptr<VertexBuffer>(VertexBuffer::Create(vertices, 9));
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, (void*)0);
+    m_VertexBuffer = std::unique_ptr<VertexBuffer>(VertexBuffer::Create(vertices, 21));
+
+    BufferLayout layout = {
+        { ShaderData::Type::Float3, "aPos" },
+        { ShaderData::Type::Float4, "aColor" }
+    };
+
+    m_VertexBuffer->SetLayout(layout);
+
+    uint32_t index = 0;
+    for (const auto& element : m_VertexBuffer->GetLayout())
+    {
+        glEnableVertexAttribArray(index);
+        glVertexAttribPointer(
+            index,
+            element.Count,
+            GL_FLOAT,
+            element.Normalized ? GL_TRUE : GL_FALSE,
+            m_VertexBuffer->GetLayout().GetStride(),
+            reinterpret_cast<const void*>(element.Offset));
+        ++index;
+    }
 
     uint32_t indices[3] = { 0, 1, 2 };
 
@@ -39,12 +58,16 @@ Application::Application()
 
     std::string vertexShaderSrc = "#version 410 core\n"
         "layout (location = 0) in vec3 aPos;\n"
+        "layout (location = 1) in vec4 aColor;\n"
+        "out vec4 vColor;\n"
         "void main() {\n"
         "gl_Position = vec4(aPos, 1.0f);\n"
+        "vColor = aColor;\n"
         "}";
     std::string fragmetShaderSrc = "#version 410 core\n"
         "out vec4 FragColor;\n"
-        "void main() { FragColor = vec4(1.0f, 0.2f, 0.6f, 1.0f); }";
+        "in vec4 vColor;\n"
+        "void main() { FragColor = vColor; }";
 
     m_Shader = std::unique_ptr<Shader>(Shader::Create(vertexShaderSrc, fragmetShaderSrc));
 
