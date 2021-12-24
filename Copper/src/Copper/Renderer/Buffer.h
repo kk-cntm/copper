@@ -29,6 +29,8 @@ public:
 
     inline uint32_t GetStride() const { return m_Stride; };
 
+    inline uint32_t Size() const { return m_Elements.size(); }
+
     inline std::vector<BufferElement>::iterator begin() { return m_Elements.begin(); }
     inline std::vector<BufferElement>::iterator end() { return m_Elements.end(); }
 

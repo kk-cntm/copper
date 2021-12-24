@@ -27,6 +27,7 @@ void OpenGLVertexBuffer::Unbind() const
 }
 
 OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* data, uint32_t count)
+    : m_Count(count)
 {
     glGenBuffers(1, &m_BufferId);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_BufferId);

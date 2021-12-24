@@ -20,41 +20,28 @@ Application::Application()
     m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
     m_ImGuiHandler = std::unique_ptr<ImGuiHandler>(ImGuiHandler::Create(*m_Window));
 
-    glGenVertexArrays(1, &m_VertexArray);
-    glBindVertexArray(m_VertexArray);
-
     float vertices[] = {
         -0.5f, -0.5f, 0.0f, 0.2f, 0.1f, 0.8f, 1.0f,
          0.5f, -0.5f, 0.0f, 0.7f, 0.4f, 0.3f, 1.0f,
          0.0f,  0.5f, 0.0f, 0.4f, 0.9f, 0.5f, 1.0f
     };
 
-    m_VertexBuffer = std::unique_ptr<VertexBuffer>(VertexBuffer::Create(vertices, 21));
+    std::shared_ptr<VertexBuffer> vertexBuffer(VertexBuffer::Create(vertices, 21));
 
     BufferLayout layout = {
         { ShaderData::Type::Float3, "aPos" },
         { ShaderData::Type::Float4, "aColor" }
     };
 
-    m_VertexBuffer->SetLayout(layout);
+    vertexBuffer->SetLayout(layout);
 
-    uint32_t index = 0;
-    for (const auto& element : m_VertexBuffer->GetLayout())
-    {
-        glEnableVertexAttribArray(index);
-        glVertexAttribPointer(
-            index,
-            element.Count,
-            GL_FLOAT,
-            element.Normalized ? GL_TRUE : GL_FALSE,
-            m_VertexBuffer->GetLayout().GetStride(),
-            reinterpret_cast<const void*>(element.Offset));
-        ++index;
-    }
+    uint32_t indices[] = { 0, 1, 2 };
+    std::shared_ptr<IndexBuffer> indexBuffer(IndexBuffer::Create(indices, 3));
 
-    uint32_t indices[3] = { 0, 1, 2 };
+    m_VertexArray = std::shared_ptr<VertexArray>(VertexArray::Create());
 
-    m_IndexBuffer = std::unique_ptr<IndexBuffer>(IndexBuffer::Create(indices, 9));
+    m_VertexArray->AddVertexBuffer(vertexBuffer);
+    m_VertexArray->SetIndexBuffer(indexBuffer);
 
     std::string vertexShaderSrc = "#version 410 core\n"
         "layout (location = 0) in vec3 aPos;\n"
@@ -82,8 +69,8 @@ int Application::Run()
         glClear(GL_COLOR_BUFFER_BIT);
 
         m_Shader->Bind();
-        glBindVertexArray(m_VertexArray);
-        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+        m_VertexArray->Bind();
+        glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 
         for (Layer* layer : m_LayerStack)
             layer->OnUpdate();

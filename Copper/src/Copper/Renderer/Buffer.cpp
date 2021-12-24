@@ -38,7 +38,7 @@ IndexBuffer* IndexBuffer::Create(uint32_t* data, uint32_t count)
 }
 
 BufferLayout::BufferLayout(std::initializer_list<BufferElement> elements)
-    : m_Elements(elements)
+    : m_Elements(elements), m_Stride(0)
 {
     SetupElementsOffset();
     SetupStride();

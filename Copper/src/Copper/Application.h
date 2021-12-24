@@ -7,6 +7,7 @@
 #include "ImGuiHandler.h"
 #include "Copper/Renderer/Shader.h"
 #include "Copper/Renderer/Buffer.h"
+#include "Copper/Renderer/VertexArray.h"
 
 namespace Copper
 {
@@ -34,10 +35,8 @@ private:
     bool m_Running = true;
     LayerStack m_LayerStack;
 
-    unsigned int m_VertexArray;
-    std::unique_ptr<VertexBuffer> m_VertexBuffer;
-    std::unique_ptr<IndexBuffer> m_IndexBuffer;
     std::unique_ptr<Shader> m_Shader;
+    std::shared_ptr<VertexArray> m_VertexArray;
 
     static Application* s_Instance;
 };
