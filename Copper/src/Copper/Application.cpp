@@ -3,7 +3,8 @@
 #include "Event/ApplicationEvent.h"
 #include "Log.h"
 #include "ImGuiHandler.h"
-#include "glad/glad.h"
+#include "Renderer/Renderer.h"
+#include "Renderer/RenderCommand.h"
 
 namespace Copper
 {
@@ -19,6 +20,8 @@ Application::Application()
     m_Window = std::unique_ptr<Window>(Window::Create());
     m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
     m_ImGuiHandler = std::unique_ptr<ImGuiHandler>(ImGuiHandler::Create(*m_Window));
+
+    RenderCommand::Init();
 
     float vertices[] = {
         -0.5f, -0.5f, 0.0f, 0.2f, 0.1f, 0.8f, 1.0f,
@@ -65,12 +68,15 @@ int Application::Run()
 {
     while (m_Running)
     {
-        glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        RenderCommand::SetClearColor({ 0.2f, 0.2f, 0.2f, 1.0f });
+        RenderCommand::Clear();
+
+        Renderer::BeginScene();
 
         m_Shader->Bind();
-        m_VertexArray->Bind();
-        glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+        Renderer::Submit(m_VertexArray);
+
+        Renderer::EndScene();
 
         for (Layer* layer : m_LayerStack)
             layer->OnUpdate();

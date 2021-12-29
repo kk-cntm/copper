@@ -1,20 +1,22 @@
 #pragma once
 
+#include "VertexArray.h"
+#include "RendererAPI.h"
+#include "RenderCommand.h"
+#include "glm/glm.hpp"
+
 namespace Copper
 {
-
-enum class RenderAPI
-{
-    None, OpenGL
-};
 
 class Renderer
 {
 public:
-    inline static RenderAPI GetAPI() { return s_RenderAPI; }
+    static void BeginScene();
+    static void EndScene();
 
-private:
-    static RenderAPI s_RenderAPI;
+    static void Submit(const std::shared_ptr<VertexArray>& vertexArray);
+
+    inline static RendererAPI::API GetAPI() { return RenderCommand::GetAPI(); }
 };
 
 }
