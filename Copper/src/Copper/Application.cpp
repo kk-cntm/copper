@@ -23,6 +23,8 @@ Application::Application()
 
     RenderCommand::Init();
 
+    m_Camera = std::make_shared<OrthoCamera>(-1.0f, 1.0f, -1.0f, 1.0f);
+
     float vertices[] = {
         -0.5f, -0.5f, 0.0f, 0.2f, 0.1f, 0.8f, 1.0f,
          0.5f, -0.5f, 0.0f, 0.7f, 0.4f, 0.3f, 1.0f,
@@ -50,8 +52,9 @@ Application::Application()
         "layout (location = 0) in vec3 aPos;\n"
         "layout (location = 1) in vec4 aColor;\n"
         "out vec4 vColor;\n"
+        "uniform mat4 u_ViewProjectionMatrix;\n"
         "void main() {\n"
-        "gl_Position = vec4(aPos, 1.0f);\n"
+        "gl_Position = u_ViewProjectionMatrix * vec4(aPos, 1.0f);\n"
         "vColor = aColor;\n"
         "}";
     std::string fragmetShaderSrc = "#version 410 core\n"
@@ -59,7 +62,7 @@ Application::Application()
         "in vec4 vColor;\n"
         "void main() { FragColor = vColor; }";
 
-    m_Shader = std::unique_ptr<Shader>(Shader::Create(vertexShaderSrc, fragmetShaderSrc));
+    m_Shader = std::shared_ptr<Shader>(Shader::Create(vertexShaderSrc, fragmetShaderSrc));
 
     s_Instance = this;
 }
@@ -71,10 +74,9 @@ int Application::Run()
         RenderCommand::SetClearColor({ 0.2f, 0.2f, 0.2f, 1.0f });
         RenderCommand::Clear();
 
-        Renderer::BeginScene();
+        Renderer::BeginScene(m_Camera);
 
-        m_Shader->Bind();
-        Renderer::Submit(m_VertexArray);
+        Renderer::Submit({ m_VertexArray, m_Shader });
 
         Renderer::EndScene();
 

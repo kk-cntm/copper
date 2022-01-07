@@ -5,9 +5,10 @@
 #include "LayerStack.h"
 #include "Event/ApplicationEvent.h"
 #include "ImGuiHandler.h"
-#include "Copper/Renderer/Shader.h"
-#include "Copper/Renderer/Buffer.h"
-#include "Copper/Renderer/VertexArray.h"
+#include "Renderer/Shader.h"
+#include "Renderer/Buffer.h"
+#include "Renderer/VertexArray.h"
+#include "Renderer/OrthoCamera.h"
 
 namespace Copper
 {
@@ -35,8 +36,9 @@ private:
     bool m_Running = true;
     LayerStack m_LayerStack;
 
-    std::unique_ptr<Shader> m_Shader;
+    std::shared_ptr<Shader> m_Shader;
     std::shared_ptr<VertexArray> m_VertexArray;
+    std::shared_ptr<OrthoCamera> m_Camera;
 
     static Application* s_Instance;
 };

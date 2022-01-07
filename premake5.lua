@@ -141,7 +141,8 @@ project "Sandbox"
         "Copper/src",
         "Copper/vendor",
         "Copper/vendor/spdlog/include",
-        "%{IncludeDir.Glad}"
+        "%{IncludeDir.Glad}",
+        "%{IncludeDir.glm}"
     }
 
     links

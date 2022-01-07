@@ -3,17 +3,22 @@
 namespace Copper
 {
 
-void Renderer::BeginScene()
+Renderer::SceneData* Renderer::s_SceneData = new Renderer::SceneData;
+
+void Renderer::BeginScene(const std::shared_ptr<Camera>& camera)
 {
+    s_SceneData->ViewProjectMatrix = camera->GetVPMatrix();
 }
 
 void Renderer::EndScene()
 {
 }
 
-void Renderer::Submit(const std::shared_ptr<VertexArray>& vertexArray)
+void Renderer::Submit(const RenderEntity& entity)
 {
-    RenderCommand::DrawIndexed(vertexArray);
+    entity.shader->Bind();
+    entity.shader->SetUniform("u_ViewProjectionMatrix", s_SceneData->ViewProjectMatrix);
+    RenderCommand::DrawIndexed(entity.vertexArray);
 }
 
 }
