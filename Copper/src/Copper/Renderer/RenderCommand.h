@@ -1,12 +1,13 @@
 #pragma once
 
+#include "Copper/Core.h"
 #include "RendererAPI.h"
 #include "glm/glm.hpp"
 
 namespace Copper
 {
 
-class RenderCommand
+class COPPER_API RenderCommand
 {
 public:
     // implemented in Platform specific dirs

@@ -2,7 +2,11 @@
 #include "Copper/Log.h"
 #include "Copper/Application.h"
 #include "Copper/Renderer/Renderer.h"
+#include "Copper/KeyCodes.h"
+#include "Copper/Application.h"
+
 #include "imgui/imgui.h"
+#include "glm/glm.hpp"
 
 ExampleLayer::ExampleLayer()
     : Copper::Layer("ExampleLayer")
@@ -50,12 +54,31 @@ ExampleLayer::ExampleLayer()
         Copper::Shader::Create(vertexShaderSrc, fragmetShaderSrc));
 }
 
-void ExampleLayer::OnEvent(Copper::Event& event)
-{
-}
-
 void ExampleLayer::OnUpdate()
 {
+    Copper::RenderCommand::SetClearColor({ 0.2f, 0.2f, 0.2f, 1.0f });
+    Copper::RenderCommand::Clear();
+
+    const auto& input = Copper::Application::Get().GetWindow().GetInput();
+
+    if (input.IsKeyPressed(CPR_KEY_UP))
+        m_CameraPosition.y += m_CameraMoveSpeed;
+    else if (input.IsKeyPressed(CPR_KEY_DOWN))
+        m_CameraPosition.y -= m_CameraMoveSpeed;
+
+    if (input.IsKeyPressed(CPR_KEY_LEFT))
+        m_CameraPosition.x -= m_CameraMoveSpeed;
+    else if (input.IsKeyPressed(CPR_KEY_RIGHT))
+        m_CameraPosition.x += m_CameraMoveSpeed;
+
+    if (input.IsKeyPressed(CPR_KEY_A))
+        m_CameraRotation -= m_CameraRotationSpeed;
+    else if (input.IsKeyPressed(CPR_KEY_D))
+        m_CameraRotation += m_CameraRotationSpeed;
+
+    m_Camera->SetPosition(m_CameraPosition);
+    m_Camera->SetRotation(m_CameraRotation);
+
     Copper::Renderer::BeginScene(m_Camera);
 
     Copper::Renderer::Submit({ m_VertexArray, m_Shader });
@@ -68,4 +91,8 @@ void ExampleLayer::OnImGuiUpdate()
     static bool show = true;
     if (show)
         ImGui::ShowDemoWindow(&show);
+}
+
+void ExampleLayer::OnEvent(Copper::Event& event)
+{
 }

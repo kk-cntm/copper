@@ -5,10 +5,6 @@
 #include "LayerStack.h"
 #include "Event/ApplicationEvent.h"
 #include "ImGuiHandler.h"
-#include "Renderer/Shader.h"
-#include "Renderer/Buffer.h"
-#include "Renderer/VertexArray.h"
-#include "Renderer/OrthoCamera.h"
 
 namespace Copper
 {

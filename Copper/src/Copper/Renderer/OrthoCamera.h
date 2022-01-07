@@ -20,7 +20,10 @@ public:
     inline const glm::mat4& GetProjectionMatrix() const { return m_ProjectionMatrix; }
 
     void SetPosition(const glm::vec3& position);
+    inline const glm::vec3& GetPosition() const { return m_Position; };
+
     void SetRotation(float rotation);
+    inline float GetRotation() const { return m_Rotation; };
 
 private:
     void RecalculateViewMatrix();

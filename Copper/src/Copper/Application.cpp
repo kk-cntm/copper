@@ -1,15 +1,13 @@
 #include "cprpch.h"
+#include "Copper/Core.h"
 #include "Application.h"
 #include "Event/ApplicationEvent.h"
 #include "Log.h"
 #include "ImGuiHandler.h"
-#include "Renderer/Renderer.h"
 #include "Renderer/RenderCommand.h"
 
 namespace Copper
 {
-
-#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
 Application* Application::s_Instance = nullptr;
 
@@ -18,7 +16,7 @@ Application::Application()
     CPR_ASSERT(!s_Instance, "Application is a singleton");
 
     m_Window = std::unique_ptr<Window>(Window::Create());
-    m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+    m_Window->SetEventCallback(CPR_EVENT_FN(Application::OnEvent));
     m_ImGuiHandler = std::unique_ptr<ImGuiHandler>(ImGuiHandler::Create(*m_Window));
 
     RenderCommand::Init();
@@ -30,9 +28,6 @@ int Application::Run()
 {
     while (m_Running)
     {
-        RenderCommand::SetClearColor({ 0.2f, 0.2f, 0.2f, 1.0f });
-        RenderCommand::Clear();
-
         for (Layer* layer : m_LayerStack)
             layer->OnUpdate();
 
@@ -50,7 +45,7 @@ int Application::Run()
 void Application::OnEvent(Event& event)
 {
     EventDispatcher dispatcher(event);
-    dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+    dispatcher.Dispatch<WindowCloseEvent>(CPR_EVENT_FN(Application::OnWindowClose));
 
     for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
     {
