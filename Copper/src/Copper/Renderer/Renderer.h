@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Copper/Core.h"
 #include "VertexArray.h"
 #include "RendererAPI.h"
 #include "RenderCommand.h"
@@ -16,7 +17,7 @@ struct RenderEntity
     std::shared_ptr<Shader> shader;
 };
 
-class Renderer
+class COPPER_API Renderer
 {
 public:
     static void BeginScene(const std::shared_ptr<Camera>& camera);

@@ -1,12 +1,13 @@
 #pragma once
 
+#include "Copper/Core.h"
 #include "Buffer.h"
 #include "Copper/Core.h"
 
 namespace Copper
 {
 
-class VertexArray
+class COPPER_API VertexArray
 {
 public:
     virtual ~VertexArray() {}

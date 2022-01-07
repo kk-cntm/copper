@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Copper/Core.h"
 #include "Copper/Log.h"
 #include "ShaderData.h"
 
@@ -21,7 +22,7 @@ struct BufferElement
           Offset(0) {}
 };
 
-class BufferLayout
+class COPPER_API BufferLayout
 {
 public:
     BufferLayout() {}
@@ -45,7 +46,7 @@ private:
     uint32_t m_Stride;
 };
 
-class VertexBuffer
+class COPPER_API VertexBuffer
 {
 public:
     virtual ~VertexBuffer() {}
@@ -59,7 +60,7 @@ public:
     static VertexBuffer* Create(float* data, uint32_t count);
 };
 
-class IndexBuffer
+class COPPER_API IndexBuffer
 {
 public:
     virtual ~IndexBuffer() {}

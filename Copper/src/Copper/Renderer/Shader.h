@@ -1,11 +1,12 @@
 #pragma once
 
+#include "Copper/Core.h"
 #include "glm/glm.hpp"
 
 namespace Copper
 {
 
-class Shader
+class COPPER_API Shader
 {
 public:
     virtual ~Shader() {}

@@ -23,47 +23,6 @@ Application::Application()
 
     RenderCommand::Init();
 
-    m_Camera = std::make_shared<OrthoCamera>(-1.0f, 1.0f, -1.0f, 1.0f);
-
-    float vertices[] = {
-        -0.5f, -0.5f, 0.0f, 0.2f, 0.1f, 0.8f, 1.0f,
-         0.5f, -0.5f, 0.0f, 0.7f, 0.4f, 0.3f, 1.0f,
-         0.0f,  0.5f, 0.0f, 0.4f, 0.9f, 0.5f, 1.0f
-    };
-
-    std::shared_ptr<VertexBuffer> vertexBuffer(VertexBuffer::Create(vertices, 21));
-
-    BufferLayout layout = {
-        { ShaderData::Type::Float3, "aPos" },
-        { ShaderData::Type::Float4, "aColor" }
-    };
-
-    vertexBuffer->SetLayout(layout);
-
-    uint32_t indices[] = { 0, 1, 2 };
-    std::shared_ptr<IndexBuffer> indexBuffer(IndexBuffer::Create(indices, 3));
-
-    m_VertexArray = std::shared_ptr<VertexArray>(VertexArray::Create());
-
-    m_VertexArray->AddVertexBuffer(vertexBuffer);
-    m_VertexArray->SetIndexBuffer(indexBuffer);
-
-    std::string vertexShaderSrc = "#version 410 core\n"
-        "layout (location = 0) in vec3 aPos;\n"
-        "layout (location = 1) in vec4 aColor;\n"
-        "out vec4 vColor;\n"
-        "uniform mat4 u_ViewProjectionMatrix;\n"
-        "void main() {\n"
-        "gl_Position = u_ViewProjectionMatrix * vec4(aPos, 1.0f);\n"
-        "vColor = aColor;\n"
-        "}";
-    std::string fragmetShaderSrc = "#version 410 core\n"
-        "out vec4 FragColor;\n"
-        "in vec4 vColor;\n"
-        "void main() { FragColor = vColor; }";
-
-    m_Shader = std::shared_ptr<Shader>(Shader::Create(vertexShaderSrc, fragmetShaderSrc));
-
     s_Instance = this;
 }
 
@@ -73,12 +32,6 @@ int Application::Run()
     {
         RenderCommand::SetClearColor({ 0.2f, 0.2f, 0.2f, 1.0f });
         RenderCommand::Clear();
-
-        Renderer::BeginScene(m_Camera);
-
-        Renderer::Submit({ m_VertexArray, m_Shader });
-
-        Renderer::EndScene();
 
         for (Layer* layer : m_LayerStack)
             layer->OnUpdate();

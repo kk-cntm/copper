@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Copper/Core.h"
+
 namespace Copper::ShaderData
 {
 
@@ -11,7 +13,7 @@ enum Type
     Bool
 };
 
-uint32_t GetSize(Type type);
-uint32_t GetCount(Type type);
+COPPER_API uint32_t GetSize(Type type);
+COPPER_API uint32_t GetCount(Type type);
 
 }
