@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Event/Event.h"
+#include "Timestep.h"
 
 namespace Copper
 {
@@ -15,7 +16,7 @@ public:
     virtual void OnAttach() {}
     virtual void OnDetach() {}
     virtual void OnEvent(Event& event) {}
-    virtual void OnUpdate() {}
+    virtual void OnUpdate(Timestep ts) {}
     virtual void OnImGuiUpdate() {}
 
     inline const std::string& GetName() const { return m_DebugName; }

@@ -54,7 +54,7 @@ ExampleLayer::ExampleLayer()
         Copper::Shader::Create(vertexShaderSrc, fragmetShaderSrc));
 }
 
-void ExampleLayer::OnUpdate()
+void ExampleLayer::OnUpdate(Copper::Timestep ts)
 {
     Copper::RenderCommand::SetClearColor({ 0.2f, 0.2f, 0.2f, 1.0f });
     Copper::RenderCommand::Clear();
@@ -62,19 +62,19 @@ void ExampleLayer::OnUpdate()
     const auto& input = Copper::Application::Get().GetWindow().GetInput();
 
     if (input.IsKeyPressed(CPR_KEY_UP))
-        m_CameraPosition.y += m_CameraMoveSpeed;
+        m_CameraPosition.y += m_CameraMoveSpeed * ts;
     else if (input.IsKeyPressed(CPR_KEY_DOWN))
-        m_CameraPosition.y -= m_CameraMoveSpeed;
+        m_CameraPosition.y -= m_CameraMoveSpeed * ts;
 
     if (input.IsKeyPressed(CPR_KEY_LEFT))
-        m_CameraPosition.x -= m_CameraMoveSpeed;
+        m_CameraPosition.x -= m_CameraMoveSpeed * ts;
     else if (input.IsKeyPressed(CPR_KEY_RIGHT))
-        m_CameraPosition.x += m_CameraMoveSpeed;
+        m_CameraPosition.x += m_CameraMoveSpeed * ts;
 
     if (input.IsKeyPressed(CPR_KEY_A))
-        m_CameraRotation -= m_CameraRotationSpeed;
+        m_CameraRotation -= m_CameraRotationSpeed * ts;
     else if (input.IsKeyPressed(CPR_KEY_D))
-        m_CameraRotation += m_CameraRotationSpeed;
+        m_CameraRotation += m_CameraRotationSpeed * ts;
 
     m_Camera->SetPosition(m_CameraPosition);
     m_Camera->SetRotation(m_CameraRotation);

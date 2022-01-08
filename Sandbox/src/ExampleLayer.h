@@ -6,6 +6,7 @@
 #include "Copper/Renderer/VertexArray.h"
 #include "Copper/Renderer/OrthoCamera.h"
 #include "Copper/Event/KeyEvent.h"
+#include "Copper/Timestep.h"
 
 class ExampleLayer : public Copper::Layer
 {
@@ -13,7 +14,7 @@ public:
     ExampleLayer();
 
     virtual void OnEvent(Copper::Event& event) override;
-    virtual void OnUpdate() override;
+    virtual void OnUpdate(Copper::Timestep ts) override;
     virtual void OnImGuiUpdate() override;
 
 private:

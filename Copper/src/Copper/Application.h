@@ -29,6 +29,7 @@ public:
 private:
     std::unique_ptr<Window> m_Window;
     std::unique_ptr<ImGuiHandler> m_ImGuiHandler;
+    float m_LastFrameTime = 0.0f;
     bool m_Running = true;
     LayerStack m_LayerStack;
 

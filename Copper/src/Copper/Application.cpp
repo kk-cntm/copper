@@ -5,6 +5,8 @@
 #include "Log.h"
 #include "ImGuiHandler.h"
 #include "Renderer/RenderCommand.h"
+#include "Platform.h"
+#include "Timestep.h"
 
 namespace Copper
 {
@@ -26,10 +28,14 @@ Application::Application()
 
 int Application::Run()
 {
+    float time = Platform::GetTime();
+    Timestep ts = time - m_LastFrameTime;
+    m_LastFrameTime = time;
+
     while (m_Running)
     {
         for (Layer* layer : m_LayerStack)
-            layer->OnUpdate();
+            layer->OnUpdate(ts);
 
         m_ImGuiHandler->Begin();
         for (Layer* layer : m_LayerStack)
