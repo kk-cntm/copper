@@ -41,8 +41,9 @@ ExampleLayer::ExampleLayer()
         "layout (location = 1) in vec4 a_Color;\n"
         "out vec4 v_Color;\n"
         "uniform mat4 u_ViewProjectionMatrix;\n"
+        "uniform mat4 u_TransformMatrix;\n"
         "void main() {\n"
-        "gl_Position = u_ViewProjectionMatrix * vec4(a_Position, 1.0f);\n"
+        "gl_Position = u_ViewProjectionMatrix * u_TransformMatrix * vec4(a_Position, 1.0f);\n"
         "v_Color = a_Color;\n"
         "}";
     std::string fragmetShaderSrc = "#version 410 core\n"
@@ -81,7 +82,14 @@ void ExampleLayer::OnUpdate(Copper::Timestep ts)
 
     Copper::Renderer::BeginScene(m_Camera);
 
-    Copper::Renderer::Submit({ m_VertexArray, m_Shader });
+    for (int x = 0; x < 20; ++x)
+        for (int y = 0; y < 20; ++y)
+        {
+            glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(x * 0.11f, y * 0.11f, 0.0f));
+            transform = glm::scale(transform, glm::vec3(0.1f));
+
+            Copper::Renderer::Submit({ m_VertexArray, m_Shader, transform });
+        }
 
     Copper::Renderer::EndScene();
 }

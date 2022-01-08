@@ -15,6 +15,7 @@ struct RenderEntity
 {
     std::shared_ptr<VertexArray> vertexArray;
     std::shared_ptr<Shader> shader;
+    glm::mat4 transform = glm::mat4(1.0f);
 };
 
 class COPPER_API Renderer

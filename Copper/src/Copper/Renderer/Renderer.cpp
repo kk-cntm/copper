@@ -18,6 +18,7 @@ void Renderer::Submit(const RenderEntity& entity)
 {
     entity.shader->Bind();
     entity.shader->SetUniform("u_ViewProjectionMatrix", s_SceneData->ViewProjectMatrix);
+    entity.shader->SetUniform("u_TransformMatrix", entity.transform);
     RenderCommand::DrawIndexed(entity.vertexArray);
 }
 
