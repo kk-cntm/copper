@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Copper/Core.h"
 #include "RendererAPI.h"
 #include "glm/glm.hpp"
 
@@ -23,7 +22,7 @@ public:
         s_RendererAPI->Clear();
     }
 
-    static void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray);
+    static void DrawIndexed(const Ref<VertexArray>& vertexArray);
 
     inline static RendererAPI::API GetAPI() { return s_RendererAPI->GetAPI(); }
 

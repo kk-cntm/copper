@@ -13,15 +13,15 @@ namespace Copper
 
 struct RenderEntity
 {
-    std::shared_ptr<VertexArray> vertexArray;
-    std::shared_ptr<Shader> shader;
+    Ref<VertexArray> vertexArray;
+    Ref<Shader> shader;
     glm::mat4 transform = glm::mat4(1.0f);
 };
 
 class COPPER_API Renderer
 {
 public:
-    static void BeginScene(const std::shared_ptr<Camera>& camera);
+    static void BeginScene(const Ref<Camera>& camera);
     static void EndScene();
 
     static void Submit(const RenderEntity& entity);

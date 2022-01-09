@@ -1,11 +1,12 @@
 #include "Renderer.h"
+#include "Copper/Core.h"
 
 namespace Copper
 {
 
 Renderer::SceneData* Renderer::s_SceneData = new Renderer::SceneData;
 
-void Renderer::BeginScene(const std::shared_ptr<Camera>& camera)
+void Renderer::BeginScene(const Ref<Camera>& camera)
 {
     s_SceneData->ViewProjectMatrix = camera->GetVPMatrix();
 }

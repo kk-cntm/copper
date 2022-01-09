@@ -2,6 +2,8 @@
 
 #include "Log.h"
 
+#include <memory>
+
 #define BIT(x) (1 << x)
 
 #ifdef CPR_ENABLE_ASSERTS
@@ -29,3 +31,14 @@
 #else
     #define COPPER_API
 #endif
+
+namespace Copper
+{
+
+template<typename T>
+using Scoped = std::unique_ptr<T>;
+
+template<typename T>
+using Ref = std::shared_ptr<T>;
+
+}

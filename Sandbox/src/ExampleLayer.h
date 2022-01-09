@@ -7,6 +7,7 @@
 #include "Copper/Renderer/OrthoCamera.h"
 #include "Copper/Event/KeyEvent.h"
 #include "Copper/Timestep.h"
+#include "Copper/Core.h"
 
 class ExampleLayer : public Copper::Layer
 {
@@ -24,7 +25,7 @@ private:
     float m_CameraRotation = 0.0f;
     float m_CameraRotationSpeed = 2.0f;
 
-    std::shared_ptr<Copper::Shader> m_Shader;
-    std::shared_ptr<Copper::VertexArray> m_VertexArray;
-    std::shared_ptr<Copper::OrthoCamera> m_Camera;
+    Copper::Ref<Copper::Shader> m_Shader;
+    Copper::Ref<Copper::VertexArray> m_VertexArray;
+    Copper::Ref<Copper::OrthoCamera> m_Camera;
 };

@@ -19,7 +19,7 @@ ExampleLayer::ExampleLayer()
          0.0f,  0.5f, 0.0f, 0.4f, 0.9f, 0.5f, 1.0f
     };
 
-    std::shared_ptr<Copper::VertexBuffer> vertexBuffer(Copper::VertexBuffer::Create(vertices, 21));
+    Copper::Ref<Copper::VertexBuffer> vertexBuffer(Copper::VertexBuffer::Create(vertices, 21));
 
     Copper::BufferLayout layout = {
         { Copper::ShaderData::Type::Float3, "a_Position" },
@@ -29,9 +29,9 @@ ExampleLayer::ExampleLayer()
     vertexBuffer->SetLayout(layout);
 
     uint32_t indices[] = { 0, 1, 2 };
-    std::shared_ptr<Copper::IndexBuffer> indexBuffer(Copper::IndexBuffer::Create(indices, 3));
+    Copper::Ref<Copper::IndexBuffer> indexBuffer(Copper::IndexBuffer::Create(indices, 3));
 
-    m_VertexArray = std::shared_ptr<Copper::VertexArray>(Copper::VertexArray::Create());
+    m_VertexArray = Copper::Ref<Copper::VertexArray>(Copper::VertexArray::Create());
 
     m_VertexArray->AddVertexBuffer(vertexBuffer);
     m_VertexArray->SetIndexBuffer(indexBuffer);
@@ -51,7 +51,7 @@ ExampleLayer::ExampleLayer()
         "in vec4 v_Color;\n"
         "void main() { FragColor = v_Color; }";
 
-    m_Shader = std::shared_ptr<Copper::Shader>(
+    m_Shader = Copper::Ref<Copper::Shader>(
         Copper::Shader::Create(vertexShaderSrc, fragmetShaderSrc));
 }
 
