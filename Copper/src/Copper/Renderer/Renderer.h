@@ -6,6 +6,7 @@
 #include "RenderCommand.h"
 #include "Camera.h"
 #include "Shader.h"
+#include "Texture.h"
 #include "glm/glm.hpp"
 
 namespace Copper
@@ -15,6 +16,7 @@ struct RenderEntity
 {
     Ref<VertexArray> vertexArray;
     Ref<Shader> shader;
+    Ref<Texture2D> texture;
     glm::mat4 transform = glm::mat4(1.0f);
 };
 

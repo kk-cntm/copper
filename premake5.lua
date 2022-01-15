@@ -13,6 +13,7 @@ IncludeDir["GLFW"] = "Copper/vendor/GLFW/include"
 IncludeDir["Glad"] = "Copper/vendor/glad/include"
 IncludeDir["ImGui"] = "Copper/vendor/imgui"
 IncludeDir["glm"] = "Copper/vendor/glm"
+IncludeDir["stb_image"] = "Copper/vendor/stb_image"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
@@ -40,7 +41,9 @@ project "Copper"
         "%{prj.name}/vendor/imgui/backends/imgui_impl_opengl3.cpp",
         "%{prj.name}/vendor/imgui/backends/imgui_impl_opengl3.h",
         "%{prj.name}/vendor/imgui/backends/imgui_impl_glfw.cpp",
-        "%{prj.name}/vendor/imgui/backends/imgui_impl_glfw.h"
+        "%{prj.name}/vendor/imgui/backends/imgui_impl_glfw.h",
+        "%{prj.name}/vendor/stb_image/stb_image.h",
+        "%{prj.name}/vendor/stb_image/stb_image.cpp"
     }
 
     includedirs
@@ -50,7 +53,8 @@ project "Copper"
         "%{IncludeDir.GLFW}",
         "%{IncludeDir.Glad}",
         "%{IncludeDir.ImGui}",
-        "%{IncludeDir.glm}"
+        "%{IncludeDir.glm}",
+        "%{IncludeDir.stb_image}"
     }
 
     links
@@ -71,9 +75,7 @@ project "Copper"
 
         xcodebuildsettings
         {
-            ["ALWAYS_SEARCH_USER_PATHS"] = "YES",
-            -- the path where project it links to will search dynamic lib
-            ["DYLIB_INSTALL_NAME_BASE"] = "../Copper"
+            ["ALWAYS_SEARCH_USER_PATHS"] = "YES"
         }
 
         links
@@ -135,7 +137,7 @@ project "Sandbox"
         "%{prj.name}/src/**.h",
         "%{prj.name}/src/**.cpp"
     }
-    
+
     includedirs
     {
         "Copper/src",
@@ -158,6 +160,12 @@ project "Sandbox"
             ["ALWAYS_SEARCH_USER_PATHS"] = "YES"
         }
 
+        postbuildcommands
+        {
+            -- copy assets dir to build directory
+            "cp -r %{prj.location}/assets %{cfg.buildtarget.directory}/assets"
+        }
+
     filter "configurations:Debug"
         defines
         {
@@ -176,4 +184,3 @@ project "Sandbox"
         defines "CPR_DIST"
         optimize "On"
         runtime "Release"
-        

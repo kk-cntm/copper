@@ -2,6 +2,7 @@
 #include "Copper/Log.h"
 #include "Copper/Application.h"
 #include "Copper/Renderer/Renderer.h"
+#include "Copper/Renderer/Texture.h"
 #include "Copper/KeyCodes.h"
 #include "Copper/Application.h"
 
@@ -12,24 +13,26 @@ ExampleLayer::ExampleLayer()
     : Copper::Layer("ExampleLayer")
 {
     m_Camera = std::make_shared<Copper::OrthoCamera>(-1.0f, 1.0f, -1.0f, 1.0f);
+    m_Texture = Copper::Texture2D::Create("assets/rocks.jpg");
 
     float vertices[] = {
-        -0.5f, -0.5f, 0.0f, 0.2f, 0.1f, 0.8f, 1.0f,
-         0.5f, -0.5f, 0.0f, 0.7f, 0.4f, 0.3f, 1.0f,
-         0.0f,  0.5f, 0.0f, 0.4f, 0.9f, 0.5f, 1.0f
+        -0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+         0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+         0.5f,  0.5f, 0.0f, 1.0f, 1.0f
     };
 
-    Copper::Ref<Copper::VertexBuffer> vertexBuffer(Copper::VertexBuffer::Create(vertices, 21));
+    Copper::Ref<Copper::VertexBuffer> vertexBuffer(Copper::VertexBuffer::Create(vertices, sizeof(vertices) / sizeof(float)));
 
     Copper::BufferLayout layout = {
         { Copper::ShaderData::Type::Float3, "a_Position" },
-        { Copper::ShaderData::Type::Float4, "a_Color" }
+        { Copper::ShaderData::Type::Float2, "a_TexPos" }
     };
 
     vertexBuffer->SetLayout(layout);
 
-    uint32_t indices[] = { 0, 1, 2 };
-    Copper::Ref<Copper::IndexBuffer> indexBuffer(Copper::IndexBuffer::Create(indices, 3));
+    uint32_t indices[] = { 0, 1, 2, 0, 2, 3 };
+    Copper::Ref<Copper::IndexBuffer> indexBuffer(Copper::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 
     m_VertexArray = Copper::Ref<Copper::VertexArray>(Copper::VertexArray::Create());
 
@@ -38,18 +41,19 @@ ExampleLayer::ExampleLayer()
 
     std::string vertexShaderSrc = "#version 410 core\n"
         "layout (location = 0) in vec3 a_Position;\n"
-        "layout (location = 1) in vec4 a_Color;\n"
-        "out vec4 v_Color;\n"
+        "layout (location = 1) in vec2 a_TexPos;\n"
+        "out vec2 v_TexPos;\n"
         "uniform mat4 u_ViewProjectionMatrix;\n"
         "uniform mat4 u_TransformMatrix;\n"
         "void main() {\n"
         "gl_Position = u_ViewProjectionMatrix * u_TransformMatrix * vec4(a_Position, 1.0f);\n"
-        "v_Color = a_Color;\n"
+        "v_TexPos = a_TexPos;\n"
         "}";
     std::string fragmetShaderSrc = "#version 410 core\n"
         "out vec4 FragColor;\n"
-        "in vec4 v_Color;\n"
-        "void main() { FragColor = v_Color; }";
+        "in vec2 v_TexPos;\n"
+        "uniform sampler2D u_Texture;\n"
+        "void main() { FragColor = texture(u_Texture, v_TexPos); }";
 
     m_Shader = Copper::Ref<Copper::Shader>(
         Copper::Shader::Create(vertexShaderSrc, fragmetShaderSrc));
@@ -82,14 +86,8 @@ void ExampleLayer::OnUpdate(Copper::Timestep ts)
 
     Copper::Renderer::BeginScene(m_Camera);
 
-    for (int x = 0; x < 20; ++x)
-        for (int y = 0; y < 20; ++y)
-        {
-            glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(x * 0.11f, y * 0.11f, 0.0f));
-            transform = glm::scale(transform, glm::vec3(0.1f));
-
-            Copper::Renderer::Submit({ m_VertexArray, m_Shader, transform });
-        }
+    glm::mat4 transform = glm::scale(glm::mat4(1.0f), glm::vec3(1.5f));
+    Copper::Renderer::Submit({ m_VertexArray, m_Shader, m_Texture, transform });
 
     Copper::Renderer::EndScene();
 }

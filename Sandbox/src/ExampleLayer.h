@@ -4,6 +4,7 @@
 #include "Copper/Renderer/Shader.h"
 #include "Copper/Renderer/Buffer.h"
 #include "Copper/Renderer/VertexArray.h"
+#include "Copper/Renderer/Texture.h"
 #include "Copper/Renderer/OrthoCamera.h"
 #include "Copper/Event/KeyEvent.h"
 #include "Copper/Timestep.h"
@@ -27,5 +28,6 @@ private:
 
     Copper::Ref<Copper::Shader> m_Shader;
     Copper::Ref<Copper::VertexArray> m_VertexArray;
+    Copper::Ref<Copper::Texture2D> m_Texture;
     Copper::Ref<Copper::OrthoCamera> m_Camera;
 };
