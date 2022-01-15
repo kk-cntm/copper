@@ -14,6 +14,7 @@ ExampleLayer::ExampleLayer()
 {
     m_Camera = std::make_shared<Copper::OrthoCamera>(-1.0f, 1.0f, -1.0f, 1.0f);
     m_Texture = Copper::Texture2D::Create("assets/rocks.jpg");
+    m_HologramWaterTexture = Copper::Texture2D::Create("assets/magnify.png");
 
     float vertices[] = {
         -0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
@@ -88,6 +89,7 @@ void ExampleLayer::OnUpdate(Copper::Timestep ts)
 
     glm::mat4 transform = glm::scale(glm::mat4(1.0f), glm::vec3(1.5f));
     Copper::Renderer::Submit({ m_VertexArray, m_Shader, m_Texture, transform });
+    Copper::Renderer::Submit({ m_VertexArray, m_Shader, m_HologramWaterTexture, transform });
 
     Copper::Renderer::EndScene();
 }

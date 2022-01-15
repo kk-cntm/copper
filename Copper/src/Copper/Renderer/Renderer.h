@@ -23,6 +23,7 @@ struct RenderEntity
 class COPPER_API Renderer
 {
 public:
+    inline static void Init() { RenderCommand::Init(); }
     static void BeginScene(const Ref<Camera>& camera);
     static void EndScene();
 

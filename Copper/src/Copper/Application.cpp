@@ -4,7 +4,7 @@
 #include "Event/ApplicationEvent.h"
 #include "Log.h"
 #include "ImGuiHandler.h"
-#include "Renderer/RenderCommand.h"
+#include "Renderer/Renderer.h"
 #include "Platform.h"
 #include "Timestep.h"
 
@@ -21,7 +21,7 @@ Application::Application()
     m_Window->SetEventCallback(CPR_EVENT_FN(Application::OnEvent));
     m_ImGuiHandler = std::unique_ptr<ImGuiHandler>(ImGuiHandler::Create(*m_Window));
 
-    RenderCommand::Init();
+    Renderer::Init();
 
     s_Instance = this;
 }

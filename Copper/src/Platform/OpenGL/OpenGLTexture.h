@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Copper/Renderer/Texture.h"
+#include "glad/glad.h"
 
 namespace Copper
 {
@@ -17,9 +18,10 @@ public:
     virtual void Bind(uint32_t unit) override;
 
 private:
+    std::tuple<GLenum, GLenum> getFormat(int channels);
+
     uint32_t m_Width;
     uint32_t m_Height;
-
     uint32_t m_TextureId;
 };
 

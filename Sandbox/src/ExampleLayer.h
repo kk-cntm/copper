@@ -29,5 +29,6 @@ private:
     Copper::Ref<Copper::Shader> m_Shader;
     Copper::Ref<Copper::VertexArray> m_VertexArray;
     Copper::Ref<Copper::Texture2D> m_Texture;
+    Copper::Ref<Copper::Texture2D> m_HologramWaterTexture;
     Copper::Ref<Copper::OrthoCamera> m_Camera;
 };

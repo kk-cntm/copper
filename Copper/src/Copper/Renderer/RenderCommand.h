@@ -9,7 +9,6 @@ namespace Copper
 class COPPER_API RenderCommand
 {
 public:
-    // implemented in Platform specific dirs
     static void Init();
 
     inline static void SetClearColor(const glm::vec4& color)
