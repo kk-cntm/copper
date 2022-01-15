@@ -163,7 +163,7 @@ project "Sandbox"
         postbuildcommands
         {
             -- copy assets dir to build directory
-            "cp -r %{prj.location}/assets %{cfg.buildtarget.directory}/assets"
+            "cp -rf %{prj.location}/assets %{cfg.buildtarget.directory}"
         }
 
     filter "configurations:Debug"
