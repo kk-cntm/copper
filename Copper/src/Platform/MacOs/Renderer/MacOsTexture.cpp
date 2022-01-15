@@ -1,3 +1,4 @@
+#include "Copper/Core.h"
 #include "Copper/Log.h"
 #include "Copper/Renderer/Texture.h"
 #include "Platform/OpenGL/OpenGLTexture.h"

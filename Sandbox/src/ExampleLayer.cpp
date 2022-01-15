@@ -22,7 +22,7 @@ ExampleLayer::ExampleLayer()
          0.5f,  0.5f, 0.0f, 1.0f, 1.0f
     };
 
-    Copper::Ref<Copper::VertexBuffer> vertexBuffer(Copper::VertexBuffer::Create(vertices, sizeof(vertices) / sizeof(float)));
+    auto vertexBuffer = Copper::VertexBuffer::Create(vertices, sizeof(vertices) / sizeof(float));
 
     Copper::BufferLayout layout = {
         { Copper::ShaderData::Type::Float3, "a_Position" },
@@ -32,7 +32,7 @@ ExampleLayer::ExampleLayer()
     vertexBuffer->SetLayout(layout);
 
     uint32_t indices[] = { 0, 1, 2, 0, 2, 3 };
-    Copper::Ref<Copper::IndexBuffer> indexBuffer(Copper::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+    auto indexBuffer = Copper::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
 
     m_VertexArray = Copper::Ref<Copper::VertexArray>(Copper::VertexArray::Create());
 

@@ -1,18 +1,18 @@
-#include "Shader.h"
-#include "Renderer.h"
-#include "RendererAPI.h"
-#include "cprpch.h"
-#include "Log.h"
+#include "Copper/Core.h"
+#include "Copper/Renderer/Shader.h"
+#include "Copper/Renderer/Renderer.h"
+#include "Copper/Renderer/RendererAPI.h"
+#include "Copper/Log.h"
 #include "Platform/OpenGL/OpenGLShader.h"
 
 namespace Copper
 {
 
-Shader* Shader::Create(const std::string& vertexSrc, const std::string& fragmentSrc)
+Ref<Shader> Shader::Create(const std::string& vertexSrc, const std::string& fragmentSrc)
 {
     switch (Renderer::GetAPI()) {
     case RendererAPI::API::OpenGL:
-        return new OpenGLShader(vertexSrc, fragmentSrc);
+        return std::make_shared<OpenGLShader>(vertexSrc, fragmentSrc);
 
     case RendererAPI::API::None:
         CPR_CORE_ASSERT(false, "RendererAPI::API::None is not valid render API");
