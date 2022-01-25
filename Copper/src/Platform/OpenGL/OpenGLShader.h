@@ -11,6 +11,7 @@ namespace Copper
 class CPR_API OpenGLShader : public Shader
 {
 public:
+    OpenGLShader(const std::string& filepath);
     OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc);
     ~OpenGLShader();
 
@@ -23,6 +24,8 @@ public:
     }
 
 private:
+    std::unordered_map<GLenum, std::string> LoadShader(const std::string& filepath);
+    GLuint CompileProgram(const std::unordered_map<GLenum, std::string>& sources);
     GLuint CompileShader(GLenum type, const std::string& src);
 
     uint32_t m_ProgramId;

@@ -15,6 +15,7 @@ ExampleLayer::ExampleLayer()
     m_Camera = std::make_shared<Copper::OrthoCamera>(-1.0f, 1.0f, -1.0f, 1.0f);
     m_Texture = Copper::Texture2D::Create("assets/rocks.jpg");
     m_HologramWaterTexture = Copper::Texture2D::Create("assets/magnify.png");
+    m_Shader = Copper::Shader::Create("assets/texture.glsl");
 
     float vertices[] = {
         -0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
@@ -39,25 +40,6 @@ ExampleLayer::ExampleLayer()
 
     m_VertexArray->AddVertexBuffer(vertexBuffer);
     m_VertexArray->SetIndexBuffer(indexBuffer);
-
-    std::string vertexShaderSrc = "#version 410 core\n"
-        "layout (location = 0) in vec3 a_Position;\n"
-        "layout (location = 1) in vec2 a_TexPos;\n"
-        "out vec2 v_TexPos;\n"
-        "uniform mat4 u_ViewProjectionMatrix;\n"
-        "uniform mat4 u_TransformMatrix;\n"
-        "void main() {\n"
-        "gl_Position = u_ViewProjectionMatrix * u_TransformMatrix * vec4(a_Position, 1.0f);\n"
-        "v_TexPos = a_TexPos;\n"
-        "}";
-    std::string fragmetShaderSrc = "#version 410 core\n"
-        "out vec4 FragColor;\n"
-        "in vec2 v_TexPos;\n"
-        "uniform sampler2D u_Texture;\n"
-        "void main() { FragColor = texture(u_Texture, v_TexPos); }";
-
-    m_Shader = Copper::Ref<Copper::Shader>(
-        Copper::Shader::Create(vertexShaderSrc, fragmetShaderSrc));
 }
 
 void ExampleLayer::OnUpdate(Copper::Timestep ts)

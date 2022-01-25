@@ -8,6 +8,21 @@
 namespace Copper
 {
 
+Ref<Shader> Shader::Create(const std::string& filepath)
+{
+    switch (Renderer::GetAPI()) {
+    case RendererAPI::API::OpenGL:
+        return std::make_shared<OpenGLShader>(filepath);
+
+    case RendererAPI::API::None:
+        CPR_CORE_ASSERT(false, "RendererAPI::API::None is not valid render API");
+        return nullptr;
+    }
+
+    CPR_CORE_ASSERT(false, "Unhandled RendererAPI::API");
+    return nullptr;
+}
+
 Ref<Shader> Shader::Create(const std::string& vertexSrc, const std::string& fragmentSrc)
 {
     switch (Renderer::GetAPI()) {
