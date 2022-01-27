@@ -15,7 +15,7 @@ ExampleLayer::ExampleLayer()
     m_Camera = std::make_shared<Copper::OrthoCamera>(-1.0f, 1.0f, -1.0f, 1.0f);
     m_Texture = Copper::Texture2D::Create("assets/rocks.jpg");
     m_HologramWaterTexture = Copper::Texture2D::Create("assets/magnify.png");
-    m_Shader = Copper::Shader::Create("assets/texture.glsl");
+    m_Shader = m_ShaderLibrary.Load("assets/texture.glsl");
 
     float vertices[] = {
         -0.5f,  0.5f, 0.0f, 0.0f, 1.0f,

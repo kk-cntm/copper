@@ -26,6 +26,7 @@ private:
     float m_CameraRotation = 0.0f;
     float m_CameraRotationSpeed = 2.0f;
 
+    Copper::ShaderLibrary m_ShaderLibrary;
     Copper::Ref<Copper::Shader> m_Shader;
     Copper::Ref<Copper::VertexArray> m_VertexArray;
     Copper::Ref<Copper::Texture2D> m_Texture;
