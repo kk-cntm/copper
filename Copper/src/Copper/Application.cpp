@@ -51,7 +51,9 @@ int Application::Run()
 void Application::OnEvent(Event& event)
 {
     EventDispatcher dispatcher(event);
+
     dispatcher.Dispatch<WindowCloseEvent>(CPR_EVENT_FN(Application::OnWindowClose));
+    dispatcher.Dispatch<WindowFBResizeEvent>(Renderer::OnWindowFbResize);
 
     for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
     {

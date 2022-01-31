@@ -18,7 +18,6 @@ public:
     virtual int Run();
 
     void OnEvent(Event& event);
-    bool OnWindowClose(WindowCloseEvent& event);
 
     void PushLayer(Layer* layer);
     void PushOverlaye(Layer* overlay);
@@ -27,6 +26,8 @@ public:
     
     inline static const Application& Get() { return *s_Instance; }
 private:
+    bool OnWindowClose(WindowCloseEvent& e);
+
     std::unique_ptr<Window> m_Window;
     std::unique_ptr<ImGuiHandler> m_ImGuiHandler;
     float m_LastFrameTime = 0.0f;

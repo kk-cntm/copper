@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Copper/Core.h"
+#include "Copper/Event/ApplicationEvent.h"
 #include "VertexArray.h"
 #include "RendererAPI.h"
 #include "RenderCommand.h"
@@ -23,13 +24,15 @@ struct RenderEntity
 class COPPER_API Renderer
 {
 public:
-    inline static void Init() { RenderCommand::Init(); }
+    static void Init();
     static void BeginScene(const Ref<Camera>& camera);
     static void EndScene();
 
     static void Submit(const RenderEntity& entity);
 
     inline static RendererAPI::API GetAPI() { return RenderCommand::GetAPI(); }
+
+    static bool OnWindowFbResize(WindowFBResizeEvent& e);
 
 private:
     struct SceneData

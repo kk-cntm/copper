@@ -74,7 +74,6 @@ void MacOsWindow::Init(const WindowProps& props)
 
 void MacOsWindow::OnUpdate()
 {
-    glViewport(0, 0, m_Data.FbWidth, m_Data.FbHeight);
     glfwPollEvents();
     m_GraphicContext->SwapBuffer();
 }
@@ -159,7 +158,7 @@ void MacOsWindow::OnGLFWWindowFbResize(GLFWwindow* window, int width, int height
     WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 
     data.FbWidth = width;
-    data.FbWidth = height;
+    data.FbHeight = height;
 
     WindowFBResizeEvent event(width, height);
     data.EventCallback(event);
