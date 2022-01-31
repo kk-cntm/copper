@@ -35,6 +35,7 @@ public:
 private:
     static void OnGLFWMouseButton(GLFWwindow* window, int button, int actions, int mode);
     static void OnGLFWMouseMove(GLFWwindow* window, double x, double y);
+    static void OnGLFWMouseScroll(GLFWwindow* window, double offsetX, double offsetY);
     static void OnGLFWWindowClose(GLFWwindow* window);
     static void OnGLFWWindowResize(GLFWwindow* window, int width, int height);
     static void OnGLFWWindowFbResize(GLFWwindow* window, int width, int height);

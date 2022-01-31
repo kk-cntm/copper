@@ -25,6 +25,8 @@ public:
     void SetRotation(float rotation);
     inline float GetRotation() const { return m_Rotation; };
 
+    void SetProjection(float left, float right, float bottom, float top);
+
 private:
     void RecalculateViewMatrix();
 

@@ -62,6 +62,7 @@ void MacOsWindow::Init(const WindowProps& props)
 
     glfwSetErrorCallback(&MacOsWindow::OnGLFWError);
     glfwSetMouseButtonCallback(m_Window, &MacOsWindow::OnGLFWMouseButton);
+    glfwSetScrollCallback(m_Window, &MacOsWindow::OnGLFWMouseScroll);
     glfwSetKeyCallback(m_Window, &MacOsWindow::OnGLFWKey);
     glfwSetWindowCloseCallback(m_Window, &MacOsWindow::OnGLFWWindowClose);
     glfwSetWindowSizeCallback(m_Window, &MacOsWindow::OnGLFWWindowResize);
@@ -123,6 +124,14 @@ void MacOsWindow::OnGLFWMouseMove(GLFWwindow* window, double x, double y)
     WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
 
     MouseMovedEvent event(x, y);
+    data.EventCallback(event);
+}
+
+void MacOsWindow::OnGLFWMouseScroll(GLFWwindow* window, double offsetX, double offsetY)
+{
+    WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(window));
+
+    MouseScrollEvent event(offsetX, offsetY);
     data.EventCallback(event);
 }
 

@@ -25,6 +25,12 @@ void OrthoCamera::SetRotation(float rotation)
     RecalculateViewMatrix();
 }
 
+void OrthoCamera::SetProjection(float left, float right, float bottom, float top)
+{
+    m_ProjectionMatrix = glm::ortho(left, right, bottom, top);
+    m_ViewProjectMatrix = m_ProjectionMatrix * m_ViewMatrix;
+}
+
 void OrthoCamera::RecalculateViewMatrix()
 {
     glm::mat4 transform(1.0f);
