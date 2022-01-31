@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Copper/ImGuiHandler.h"
-#include "Copper/Window.h"
+#include "Copper/Core/ImGuiHandler.h"
+#include "Copper/Core/Window.h"
 #include "MacOsWindow.h"
 
 namespace Copper

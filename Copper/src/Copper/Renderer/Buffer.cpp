@@ -3,7 +3,7 @@
 #include "Renderer.h"
 #include "RendererAPI.h"
 #include "Platform/OpenGL/OpenGLBuffer.h"
-#include "Copper/Log.h"
+#include "Copper/Core/Log.h"
 
 namespace Copper
 {

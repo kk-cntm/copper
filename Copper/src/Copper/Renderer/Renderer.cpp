@@ -1,6 +1,6 @@
 #include "Renderer.h"
-#include "Copper/Core.h"
-#include "Copper/Application.h"
+#include "Copper/Core/Core.h"
+#include "Copper/Core/Application.h"
 
 namespace Copper
 {

@@ -1,14 +1,14 @@
 #pragma once
 
-#include "Copper/Layer.h"
+#include "Copper/Core/Layer.h"
+#include "Copper/Core/Timestep.h"
+#include "Copper/Core/Core.h"
 #include "Copper/Renderer/Shader.h"
 #include "Copper/Renderer/Buffer.h"
 #include "Copper/Renderer/VertexArray.h"
 #include "Copper/Renderer/Texture.h"
 #include "Copper/OrthoCameraController.h"
 #include "Copper/Event/KeyEvent.h"
-#include "Copper/Timestep.h"
-#include "Copper/Core.h"
 
 class ExampleLayer : public Copper::Layer
 {

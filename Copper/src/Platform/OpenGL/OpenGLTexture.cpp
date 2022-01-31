@@ -1,5 +1,5 @@
 #include "OpenGLTexture.h"
-#include "Copper/Log.h"
+#include "Copper/Core/Log.h"
 
 #include "stb_image.h"
 #include "glad/glad.h"

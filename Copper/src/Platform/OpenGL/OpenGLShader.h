@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Copper/Core.h"
+#include "Copper/Core/Core.h"
 #include "Copper/Renderer/Shader.h"
 #include "glad/glad.h"
 #include "glm/gtc/type_ptr.hpp"

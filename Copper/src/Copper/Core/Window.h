@@ -1,9 +1,9 @@
 #pragma once
 
 #include "cprpch.h"
-#include "Event/Event.h"
+#include "Copper/Event/Event.h"
 #include "Input.h"
-#include "Renderer/GraphicContext.h"
+#include "Copper/Renderer/GraphicContext.h"
 
 namespace Copper
 {

@@ -3,7 +3,7 @@
 #include "Core.h"
 #include "Window.h"
 #include "LayerStack.h"
-#include "Event/ApplicationEvent.h"
+#include "Copper/Event/ApplicationEvent.h"
 #include "ImGuiHandler.h"
 
 namespace Copper

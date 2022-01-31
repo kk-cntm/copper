@@ -1,5 +1,5 @@
 #include "cprpch.h"
-#include "Copper/Core.h"
+#include "Copper/Core/Core.h"
 #include "MacOsImGuiHandler.h"
 #include "imgui.h"
 #include "backends/imgui_impl_glfw.h"

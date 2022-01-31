@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Copper/Application.h"
+#include "Copper/Core/Application.h"
 
 class Sandbox : public Copper::Application
 {

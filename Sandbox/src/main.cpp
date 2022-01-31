@@ -1,5 +1,5 @@
-#include "Copper/EntryPoint.h"
-#include "Copper/Application.h"
+#include "Copper/Core/EntryPoint.h"
+#include "Copper/Core/Application.h"
 #include "Sandbox.h"
 
 Copper::Application* Copper::CreateApplication()

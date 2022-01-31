@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Copper/Renderer/RendererAPI.h"
-#include "Copper/Core.h"
+#include "Copper/Core/Core.h"
 
 namespace Copper
 {

@@ -1,6 +1,6 @@
 #include "OrthoCameraController.h"
-#include "Copper/Application.h"
-#include "Copper/KeyCodes.h"
+#include "Copper/Core/Application.h"
+#include "Copper/Core/KeyCodes.h"
 
 namespace Copper
 {

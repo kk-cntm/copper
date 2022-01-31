@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Copper/Core.h"
+#include "Copper/Core/Core.h"
+#include "Copper/Core/Timestep.h"
 #include "Copper/Renderer/OrthoCamera.h"
 #include "Copper/Event/Event.h"
 #include "Copper/Event/ApplicationEvent.h"
 #include "Copper/Event/MouseEvent.h"
-#include "Copper/Timestep.h"
 
 namespace Copper
 {

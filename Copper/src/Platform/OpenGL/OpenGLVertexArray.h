@@ -2,7 +2,7 @@
 
 #include "Copper/Renderer/VertexArray.h"
 #include "Copper/Renderer/ShaderData.h"
-#include "Copper/Core.h"
+#include "Copper/Core/Core.h"
 #include "glad/glad.h"
 
 namespace Copper

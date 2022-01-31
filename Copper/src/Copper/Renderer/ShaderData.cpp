@@ -1,5 +1,5 @@
 #include "ShaderData.h"
-#include "Copper/Log.h"
+#include "Copper/Core/Log.h"
 
 namespace Copper::ShaderData
 {

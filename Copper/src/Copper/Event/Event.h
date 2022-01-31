@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Copper/Core.h"
+#include "Copper/Core/Core.h"
 #include "cprpch.h"
 
 namespace Copper

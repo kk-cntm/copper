@@ -1,6 +1,6 @@
 #include "cprpch.h"
 #include "MacOsWindow.h"
-#include "Copper/Log.h"
+#include "Copper/Core/Log.h"
 #include "Copper/Event/MouseEvent.h"
 #include "Copper/Event/ApplicationEvent.h"
 #include "Copper/Event/KeyEvent.h"

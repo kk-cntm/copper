@@ -1,10 +1,10 @@
 #include "cprpch.h"
-#include "Copper/Core.h"
+#include "Copper/Core/Core.h"
+#include "Copper/Event/ApplicationEvent.h"
+#include "Copper/Renderer/Renderer.h"
 #include "Application.h"
-#include "Event/ApplicationEvent.h"
 #include "Log.h"
 #include "ImGuiHandler.h"
-#include "Renderer/Renderer.h"
 #include "Platform.h"
 #include "Timestep.h"
 

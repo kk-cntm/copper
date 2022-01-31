@@ -1,8 +1,8 @@
-#include "Copper/Core.h"
+#include "Copper/Core/Core.h"
+#include "Copper/Core/Log.h"
 #include "Copper/Renderer/Shader.h"
 #include "Copper/Renderer/Renderer.h"
 #include "Copper/Renderer/RendererAPI.h"
-#include "Copper/Log.h"
 #include "Platform/OpenGL/OpenGLShader.h"
 
 namespace Copper

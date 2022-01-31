@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Buffer.h"
-#include "Copper/Core.h"
+#include "Copper/Core/Core.h"
 
 namespace Copper
 {

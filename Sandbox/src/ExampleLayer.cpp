@@ -1,10 +1,9 @@
 #include "ExampleLayer.h"
-#include "Copper/Log.h"
-#include "Copper/Application.h"
+#include "Copper/Core/Log.h"
+#include "Copper/Core/Application.h"
 #include "Copper/Renderer/Renderer.h"
 #include "Copper/Renderer/Texture.h"
-#include "Copper/KeyCodes.h"
-#include "Copper/Application.h"
+#include "Copper/Core/KeyCodes.h"
 
 #include "imgui/imgui.h"
 #include "glm/glm.hpp"

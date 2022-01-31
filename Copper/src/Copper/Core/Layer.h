@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Event/Event.h"
+#include "Copper/Event/Event.h"
 #include "Timestep.h"
 
 namespace Copper

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Copper/Core.h"
+#include "Copper/Core/Core.h"
 #include "glm/glm.hpp"
 
 namespace Copper

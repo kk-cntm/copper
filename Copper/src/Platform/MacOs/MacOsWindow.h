@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Copper/Window.h"
-#include "Copper/Input.h"
+#include "Copper/Core/Window.h"
+#include "Copper/Core/Input.h"
 #include "GLFW/glfw3.h"
 
 namespace Copper

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Copper/Platform.h"
+#include "Copper/Core/Platform.h"
 #include "GLFW/glfw3.h"
 
 namespace Copper

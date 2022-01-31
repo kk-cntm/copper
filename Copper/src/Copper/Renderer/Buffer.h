@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Copper/Core.h"
-#include "Copper/Log.h"
+#include "Copper/Core/Core.h"
+#include "Copper/Core/Log.h"
 #include "ShaderData.h"
 
 namespace Copper

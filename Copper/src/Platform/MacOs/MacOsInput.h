@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Copper/Input.h"
+#include "Copper/Core/Input.h"
 #include "GLFW/glfw3.h"
 
 namespace Copper
