@@ -2,8 +2,8 @@
 #include "Copper/Core/Log.h"
 #include "Copper/Renderer/Texture.h"
 #include "Platform/OpenGL/OpenGLTexture.h"
-#include "Renderer.h"
-#include "RendererAPI.h"
+#include "Copper/Renderer/Renderer.h"
+#include "Copper/Renderer/RendererAPI.h"
 
 namespace Copper
 {
