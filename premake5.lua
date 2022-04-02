@@ -1,3 +1,5 @@
+require "clion"
+
 workspace "Copper"
     architecture "ARM64"
 
@@ -9,11 +11,11 @@ workspace "Copper"
     }
 
 IncludeDir = {}
-IncludeDir["GLFW"] = "Copper/vendor/GLFW/include"
-IncludeDir["Glad"] = "Copper/vendor/glad/include"
-IncludeDir["ImGui"] = "Copper/vendor/imgui"
-IncludeDir["glm"] = "Copper/vendor/glm"
-IncludeDir["stb_image"] = "Copper/vendor/stb_image"
+IncludeDir["GLFW"] = "%{wks.location}/Copper/vendor/GLFW/include"
+IncludeDir["Glad"] = "%{wks.location}/Copper/vendor/glad/include"
+IncludeDir["ImGui"] = "%{wks.location}/Copper/vendor/imgui"
+IncludeDir["glm"] = "%{wks.location}/Copper/vendor/glm"
+IncludeDir["stb_image"] = "%{wks.location}/Copper/vendor/stb_image"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 

@@ -29,7 +29,7 @@ project "Sandbox"
     }
 
     filter "system:macosx"
-        systemversion "latest"
+        systemversion "11.0"
 
         xcodebuildsettings
         {
