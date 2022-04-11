@@ -56,14 +56,14 @@ endif()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/vendor/spdlog/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/vendor/glad/include)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/vendor/GLFW/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/vendor/glfw/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/vendor/stb_image)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/vendor/glm)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/glm)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/GLFW)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/glfw)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-fvisibility=hidden")
 set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-force_load libImGui.a ")

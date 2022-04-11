@@ -1,12 +1,12 @@
 [submodule "Copper/vendor/spdlog"]
 	path = Copper/vendor/spdlog
 	url = git@github.com:gabime/spdlog.git
-[submodule "Copper/vendor/GLFW"]
-	path = Copper/vendor/GLFW
-	url = git@github.com:Remp/glfw.git
-[submodule "Copper/vendor/imgui"]
-	path = Copper/vendor/imgui
-	url = git@github.com:Remp/imgui.git
 [submodule "Copper/vendor/glm"]
 	path = Copper/vendor/glm
 	url = git@github.com:g-truc/glm.git
+[submodule "Copper/vendor/glfw"]
+	path = Copper/vendor/glfw
+	url = git@github.com:glfw/glfw.git
+[submodule "Copper/vendor/imgui"]
+	path = Copper/vendor/imgui
+	url = git@github.com:ocornut/imgui.git
