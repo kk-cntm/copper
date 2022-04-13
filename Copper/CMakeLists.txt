@@ -31,6 +31,82 @@ file(GLOB_RECURSE SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 
+set(SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/OrthoCameraController.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/OrthoCameraController.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/Application.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/Application.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/Core.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/EntryPoint.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/ImGuiHandler.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/Input.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/KeyCodes.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/Layer.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/LayerStack.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/LayerStack.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/Log.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/Log.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/MouseCodes.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/Platform.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/Timestep.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/Window.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Event/ApplicationEvent.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Event/Event.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Event/KeyEvent.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Event/MouseEvent.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/Buffer.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/Buffer.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/Camera.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/GraphicContext.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/OrthoCamera.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/OrthoCamera.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/RenderCommand.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/RenderCommand.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/Renderer.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/Renderer.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/RendererAPI.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/Shader.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/Shader.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/ShaderData.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/ShaderData.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/Texture.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/VertexArray.h)
+
+if (CPR_PLATFORM STREQUAL MacOS)
+    list(APPEND SOURCES
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/MacOs/MacOsImGuiHandler.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/MacOs/MacOsImGuiHandler.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/MacOs/MacOsInput.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/MacOs/MacOsInput.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/MacOs/MacOsPlatform.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/MacOs/MacOsPlatform.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/MacOs/MacOsWindow.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/MacOs/MacOsWindow.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/MacOs/Renderer/MacOsBuffer.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/MacOs/Renderer/MacOsRenderCommand.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/MacOs/Renderer/MacOsShader.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/MacOs/Renderer/MacOsTexture.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/MacOs/Renderer/MacOsVertexArray.cpp)
+endif ()
+
+if (OpenGL IN_LIST CPR_AVAILABLE_GRAPHIC_APIS)
+    list(APPEND SOURCES
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/OpenGL/OpenGLBuffer.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/OpenGL/OpenGLBuffer.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/OpenGL/OpenGLContext.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/OpenGL/OpenGLContext.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/OpenGL/OpenGLRendererAPI.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/OpenGL/OpenGLRendererAPI.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/OpenGL/OpenGLShader.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/OpenGL/OpenGLShader.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/OpenGL/OpenGLTexture.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/OpenGL/OpenGLTexture.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/OpenGL/OpenGLVertexArray.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/OpenGL/OpenGLVertexArray.cpp)
+else ()
+    message(FATAL_ERROR "Unsupported graphic api")
+endif ()
+
 add_library(${PROJECT_NAME} SHARED ${SOURCES} ${STB_SRC})
 add_library(Glad ${GLAD_SRC})
 add_library(ImGui ${IMGUI_SRC})
@@ -41,7 +117,7 @@ target_link_libraries(${PROJECT_NAME}
         Glad
         ImGui)
 
-if (${CMAKE_SYSTEM_NAME} MATCHES Darwin)
+if (${CPR_PLATFORM} STREQUAL MacOS)
     find_library(CORE_FOUNDATION_LIB CoreFoundation)
     find_library(IO_KIT_LIB IOKit)
     find_library(COCOA_LIB Cocoa)
@@ -52,7 +128,7 @@ if (${CMAKE_SYSTEM_NAME} MATCHES Darwin)
             ${IO_KIT_LIB}
             ${COCOA_LIB}
             ${OPENGL_LIB})
-endif()
+endif ()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/vendor/spdlog/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/vendor/glad/include)
@@ -76,15 +152,15 @@ target_compile_definitions(${PROJECT_NAME} PUBLIC GLFW_INCLUDE_NONE)
 
 if (CMAKE_BUILD_TYPE STREQUAL Debug)
     target_compile_definitions(${PROJECT_NAME} PRIVATE CPR_DEBUG CPR_ENABLE_ASSERTS)
-elseif(CMAKE_BUILD_TYPE STREQUAL Release)
+elseif (CMAKE_BUILD_TYPE STREQUAL Release)
     target_compile_definitions(${PROJECT_NAME} PRIVATE CPR_RELEASE)
-elseif(CMAKE_BUILD_TYPE STREQUAL Release)
+elseif (CMAKE_BUILD_TYPE STREQUAL Release)
     target_compile_definitions(${PROJECT_NAME} PRIVATE CPR_DIST)
-endif()
+endif ()
 
-if (${CMAKE_SYSTEM_NAME} MATCHES Darwin)
+if (CPR_PLATFORM STREQUAL MacOS)
     target_compile_definitions(${PROJECT_NAME} PRIVATE CPR_PLATFORM_MACOS)
     message(DEBUG "MACOS platform")
-else()
+else ()
     message(FATAL_ERROR "Not supported OS")
-endif()
+endif ()

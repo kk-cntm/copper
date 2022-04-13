@@ -3,25 +3,28 @@ set(CMAKE_CXX_STANDARD 17)
 
 project(Sandbox)
 
-file(GLOB_RECURSE SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
+set(SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Sandbox.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Sandbox.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Sandbox2D.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Sandbox2D.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 if (CMAKE_BUILD_TYPE STREQUAL Debug)
     target_compile_definitions(${PROJECT_NAME} PRIVATE CPR_DEBUG CPR_ENABLE_ASSERTS)
-elseif(CMAKE_BUILD_TYPE STREQUAL Release)
+elseif (CMAKE_BUILD_TYPE STREQUAL Release)
     target_compile_definitions(${PROJECT_NAME} PRIVATE CPR_RELEASE)
-elseif(CMAKE_BUILD_TYPE STREQUAL Release)
+elseif (CMAKE_BUILD_TYPE STREQUAL Release)
     target_compile_definitions(${PROJECT_NAME} PRIVATE CPR_DIST)
-endif()
+endif ()
 
-if (${CMAKE_SYSTEM_NAME} MATCHES Darwin)
+if (CPR_PLATFORM STREQUAL MacOS)
     target_compile_definitions(${PROJECT_NAME} PRIVATE CPR_PLATFORM_MACOS)
-else()
+else ()
     message(FATAL_ERROR "Not supported OS")
-endif()
+endif ()
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/Copper/vendor/spdlog/include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/Copper/vendor/glad/include)
