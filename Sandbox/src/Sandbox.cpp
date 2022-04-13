@@ -1,7 +1,7 @@
 #include "Sandbox.h"
-#include "ExampleLayer.h"
+#include "Sandbox2D.h"
 
 Sandbox::Sandbox()
 {
-    PushLayer(new ExampleLayer);
+    PushLayer(new Sandbox2D);
 }

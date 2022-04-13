@@ -23,7 +23,8 @@ void Renderer::EndScene()
 
 void Renderer::Submit(const RenderEntity& entity)
 {
-    entity.texture->Bind(0);
+    if (entity.texture)
+        entity.texture->Bind(0);
     entity.shader->Bind();
     entity.shader->SetUniform("u_ViewProjectionMatrix", s_SceneData->ViewProjectMatrix);
     entity.shader->SetUniform("u_TransformMatrix", entity.transform);

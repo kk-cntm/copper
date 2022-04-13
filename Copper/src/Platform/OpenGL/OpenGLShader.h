@@ -23,6 +23,11 @@ public:
         glUniformMatrix4fv(glGetUniformLocation(m_ProgramId, name.c_str()), 1, GL_FALSE, glm::value_ptr(mat4));
     }
 
+    inline virtual void SetUniform(const std::string& name, const glm::vec4& vec4) override
+    {
+        glUniform4fv(glGetUniformLocation(m_ProgramId, name.c_str()), 1, glm::value_ptr(vec4));
+    }
+
 private:
     std::unordered_map<GLenum, std::string> LoadShader(const std::string& filepath);
     GLuint CompileProgram(const std::unordered_map<GLenum, std::string>& sources);

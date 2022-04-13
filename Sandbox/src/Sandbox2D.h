@@ -10,26 +10,21 @@
 #include "Copper/OrthoCameraController.h"
 #include "Copper/Event/KeyEvent.h"
 
-class ExampleLayer : public Copper::Layer
+class Sandbox2D : public Copper::Layer
 {
 public:
-    ExampleLayer();
+ Sandbox2D();
 
     virtual void OnEvent(Copper::Event& event) override;
     virtual void OnUpdate(Copper::Timestep ts) override;
     virtual void OnImGuiUpdate() override;
 
 private:
-    glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
-    float m_CameraMoveSpeed = 0.1f;
-
-    float m_CameraRotation = 0.0f;
-    float m_CameraRotationSpeed = 2.0f;
+    Copper::Ref<Copper::OrthoCameraController> m_CameraController;
 
     Copper::ShaderLibrary m_ShaderLibrary;
-    Copper::Ref<Copper::Shader> m_Shader;
+    Copper::Ref<Copper::Shader> m_FlatColorShader;
     Copper::Ref<Copper::VertexArray> m_VertexArray;
-    Copper::Ref<Copper::Texture2D> m_Texture;
-    Copper::Ref<Copper::Texture2D> m_HologramWaterTexture;
-    Copper::Ref<Copper::OrthoCameraController> m_CameraController;
+
+    glm::vec4 m_Color = { 0.0f, 0.0f, 0.0f, 1.0f };
 };
