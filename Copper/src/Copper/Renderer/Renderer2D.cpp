@@ -44,7 +44,7 @@ void Renderer2D::Init()
     storage->VertexArray->SetIndexBuffer(indexBuffer);
 
     storage->TextureShader->Bind();
-    storage->TextureShader->SetUniform("u_Tex1", 0);
+    storage->TextureShader->SetInt("u_Tex1", 0);
 }
 
 void Renderer2D::Shutdown() { delete storage; }
@@ -52,7 +52,7 @@ void Renderer2D::Shutdown() { delete storage; }
 void Renderer2D::BeginScene(const Ref<Copper::OrthoCamera>& camera)
 {
     storage->TextureShader->Bind();
-    storage->TextureShader->SetUniform("u_ViewProjectionMatrix", camera->GetVPMatrix());
+    storage->TextureShader->SetMat4("u_ViewProjectionMatrix", camera->GetVPMatrix());
 }
 
 void Renderer2D::EndScene() {}
@@ -68,8 +68,8 @@ void Renderer2D::DrawQuad(const glm::vec3& pos, const glm::vec2& size, const glm
 
     glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos)
                           * /* rotation */ glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-    storage->TextureShader->SetUniform("u_TransformMatrix", transform);
-    storage->TextureShader->SetUniform("u_Color", color);
+    storage->TextureShader->SetMat4("u_TransformMatrix", transform);
+    storage->TextureShader->SetVec4("u_Color", color);
 
     storage->WhiteTexture->Bind(0);
 
@@ -87,8 +87,8 @@ void Renderer2D::DrawQuad(const glm::vec3& pos, const glm::vec2& size, const Ref
 
     glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos)
                           * /* rotation */ glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-    storage->TextureShader->SetUniform("u_TransformMatrix", transform);
-    storage->TextureShader->SetUniform("u_Color", glm::vec4(1.0f));
+    storage->TextureShader->SetMat4("u_TransformMatrix", transform);
+    storage->TextureShader->SetVec4("u_Color", glm::vec4(1.0f));
 
     tex->Bind(0);
 

@@ -28,8 +28,8 @@ void Renderer::Submit(const RenderEntity& entity)
     if (entity.texture)
         entity.texture->Bind(0);
     entity.shader->Bind();
-    entity.shader->SetUniform("u_ViewProjectionMatrix", s_SceneData->ViewProjectMatrix);
-    entity.shader->SetUniform("u_TransformMatrix", entity.transform);
+    entity.shader->SetMat4("u_ViewProjectionMatrix", s_SceneData->ViewProjectMatrix);
+    entity.shader->SetMat4("u_TransformMatrix", entity.transform);
     RenderCommand::DrawIndexed(entity.vertexArray);
 }
 
