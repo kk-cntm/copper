@@ -7,6 +7,16 @@
 namespace Copper
 {
 
+OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height)
+    : m_Width(width), m_Height(height), m_DataFormat(GL_RGBA), m_InternalFormat(GL_RGBA8)
+{
+    glGenTextures(1, &m_TextureId);
+    glBindTexture(GL_TEXTURE_2D, m_TextureId);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+}
+
 OpenGLTexture2D::OpenGLTexture2D(const std::string& path)
 {
     stbi_set_flip_vertically_on_load(true);
@@ -61,6 +71,13 @@ void OpenGLTexture2D::Bind(uint32_t unit)
 {
     glActiveTexture(unit);
     glBindTexture(GL_TEXTURE_2D, m_TextureId);
+}
+
+void OpenGLTexture2D::SetData(void* data, uint32_t size)
+{
+    CPR_CORE_ASSERT(m_Width * m_Height * (m_DataFormat == GL_RGBA ? 4 : 3) == size, "Inappropriate size");
+    glBindTexture(GL_TEXTURE_2D, m_TextureId);
+    glTexImage2D(GL_TEXTURE_2D, 0, m_InternalFormat, m_Width, m_Height, 0, m_DataFormat, GL_UNSIGNED_BYTE, data);
 }
 
 }

@@ -1,6 +1,7 @@
 #include "Renderer.h"
 #include "Copper/Core/Core.h"
 #include "Copper/Core/Application.h"
+#include "Renderer2D.h"
 
 namespace Copper
 {
@@ -8,6 +9,7 @@ namespace Copper
 void Renderer::Init()
 {
     RenderCommand::Init();
+    Renderer2D::Init();
 }
 
 Renderer::SceneData* Renderer::s_SceneData = new Renderer::SceneData;

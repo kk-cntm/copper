@@ -15,7 +15,9 @@ public:
     virtual void Unbind() const = 0;
 
     virtual void SetUniform(const std::string& name, const glm::mat4& mat4) = 0;
+    virtual void SetUniform(const std::string& name, const glm::vec3& vec3) = 0;
     virtual void SetUniform(const std::string& name, const glm::vec4& vec4) = 0;
+    virtual void SetUniform(const std::string& name, int value) = 0;
 
     static Ref<Shader> Create(const std::string& filepath);
     static Ref<Shader> Create(const std::string& vertexSrc, const std::string& fragmentSrc);

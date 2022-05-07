@@ -23,9 +23,20 @@ public:
         glUniformMatrix4fv(glGetUniformLocation(m_ProgramId, name.c_str()), 1, GL_FALSE, glm::value_ptr(mat4));
     }
 
+    inline virtual void SetUniform(const std::string& name, const glm::vec3& vec3) override
+    {
+        glUniform3fv(glGetUniformLocation(m_ProgramId, name.c_str()), 1, glm::value_ptr(vec3));
+
+    }
+
     inline virtual void SetUniform(const std::string& name, const glm::vec4& vec4) override
     {
         glUniform4fv(glGetUniformLocation(m_ProgramId, name.c_str()), 1, glm::value_ptr(vec4));
+    }
+
+    inline virtual void SetUniform(const std::string& name, int value) override
+    {
+        glUniform1i(glGetUniformLocation(m_ProgramId, name.c_str()), value);
     }
 
 private:

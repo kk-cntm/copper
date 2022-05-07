@@ -21,10 +21,6 @@ public:
 
 private:
     Copper::Ref<Copper::OrthoCameraController> m_CameraController;
-
-    Copper::ShaderLibrary m_ShaderLibrary;
-    Copper::Ref<Copper::Shader> m_FlatColorShader;
-    Copper::Ref<Copper::VertexArray> m_VertexArray;
-
+    Copper::Ref<Copper::Texture2D> m_Texture;
     glm::vec4 m_Color = { 0.0f, 0.0f, 0.0f, 1.0f };
 };

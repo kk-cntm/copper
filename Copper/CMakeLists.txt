@@ -70,7 +70,9 @@ set(SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/ShaderData.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/ShaderData.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/Texture.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/VertexArray.h)
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/VertexArray.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/Renderer2D.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/Renderer2D.h)
 
 if (CPR_PLATFORM STREQUAL MacOS)
     list(APPEND SOURCES
