@@ -74,6 +74,12 @@ set(SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/Renderer2D.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/Renderer2D.h)
 
+if (CMAKE_BUILD_TYPE STREQUAL Debug)
+    list(APPEND SOURCES
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Debug/DebugProfiler.h
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Debug/DebugProfiler.cpp)
+endif ()
+
 if (CPR_PLATFORM STREQUAL MacOS)
     list(APPEND SOURCES
             ${CMAKE_CURRENT_SOURCE_DIR}/src/Platform/MacOs/MacOsImGuiHandler.h
@@ -153,10 +159,10 @@ target_precompile_headers(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src
 target_compile_definitions(${PROJECT_NAME} PUBLIC GLFW_INCLUDE_NONE)
 
 if (CMAKE_BUILD_TYPE STREQUAL Debug)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE CPR_DEBUG CPR_ENABLE_ASSERTS)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE CPR_DEBUG CPR_ENABLE_ASSERTS CPR_ENABLE_PROFILER)
 elseif (CMAKE_BUILD_TYPE STREQUAL Release)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE CPR_RELEASE)
-elseif (CMAKE_BUILD_TYPE STREQUAL Release)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE CPR_RELEASE CPR_ENABLE_PROFILER)
+elseif (CMAKE_BUILD_TYPE STREQUAL Dist)
     target_compile_definitions(${PROJECT_NAME} PRIVATE CPR_DIST)
 endif ()
 

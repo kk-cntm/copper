@@ -2,6 +2,7 @@
 #include "Copper/Core/Core.h"
 #include "Copper/Event/ApplicationEvent.h"
 #include "Copper/Renderer/Renderer.h"
+#include "Copper/Debug/DebugProfiler.h"
 #include "Application.h"
 #include "Log.h"
 #include "ImGuiHandler.h"
@@ -28,12 +29,14 @@ Application::Application()
 
 int Application::Run()
 {
-    float time = Platform::GetTime();
-    Timestep ts = time - m_LastFrameTime;
-    m_LastFrameTime = time;
-
     while (m_Running)
     {
+        CPR_PROFILER_TRACE_SCOPE("Frame time");
+
+        float time = Platform::GetTime();
+        Timestep ts = time - m_LastFrameTime;
+        m_LastFrameTime = time;
+
         for (Layer* layer : m_LayerStack)
             layer->OnUpdate(ts);
 

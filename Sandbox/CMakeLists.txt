@@ -13,10 +13,10 @@ set(SOURCES
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 if (CMAKE_BUILD_TYPE STREQUAL Debug)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE CPR_DEBUG CPR_ENABLE_ASSERTS)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE CPR_DEBUG CPR_ENABLE_ASSERTS CPR_ENABLE_PROFILER)
 elseif (CMAKE_BUILD_TYPE STREQUAL Release)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE CPR_RELEASE)
-elseif (CMAKE_BUILD_TYPE STREQUAL Release)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE CPR_RELEASE CPR_ENABLE_PROFILER)
+elseif (CMAKE_BUILD_TYPE STREQUAL Dist)
     target_compile_definitions(${PROJECT_NAME} PRIVATE CPR_DIST)
 endif ()
 

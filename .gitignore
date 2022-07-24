@@ -11,3 +11,7 @@ Makefile
 # idea
 .idea
 cmake-build-*
+
+# vscode
+.vscode
+build
