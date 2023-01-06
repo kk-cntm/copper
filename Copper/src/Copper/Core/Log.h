@@ -28,14 +28,14 @@ private:
 };
 
 // Core log macros
-#define CPR_CORE_FATAL(...) ::Copper::Log::GetCoreLogger()->fatal(__VA_ARGS__)
+#define CPR_CORE_FATAL(...) ::Copper::Log::GetCoreLogger()->critical(__VA_ARGS__)
 #define CPR_CORE_ERROR(...) ::Copper::Log::GetCoreLogger()->error(__VA_ARGS__)
 #define CPR_CORE_WARN(...) ::Copper::Log::GetCoreLogger()->warn(__VA_ARGS__)
 #define CPR_CORE_INFO(...) ::Copper::Log::GetCoreLogger()->info(__VA_ARGS__)
 #define CPR_CORE_TRACE(...) ::Copper::Log::GetCoreLogger()->trace(__VA_ARGS__)
 
 // Client log macros
-#define CPR_FATAL(...) ::Copper::Log::GetClientLogger()->fatal(__VA_ARGS__)
+#define CPR_FATAL(...) ::Copper::Log::GetClientLogger()->critical(__VA_ARGS__)
 #define CPR_ERROR(...) ::Copper::Log::GetClientLogger()->error(__VA_ARGS__)
 #define CPR_WARN(...) ::Copper::Log::GetClientLogger()->warn(__VA_ARGS__)
 #define CPR_INFO(...) ::Copper::Log::GetClientLogger()->info(__VA_ARGS__)

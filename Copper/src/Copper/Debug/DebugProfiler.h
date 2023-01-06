@@ -2,6 +2,8 @@
 
 #include "Copper/Core/Core.h"
 
+#include <fstream>
+
 namespace Copper
 {
 class COPPER_API ScopedDebugTimer
@@ -58,7 +60,7 @@ private:
 #define CPR_PROFILER_START_SESSION(name) Copper::DebugProfiler::Get()->BeginSession(name)
 #define CPR_PROFILER_END_SESSION() Copper::DebugProfiler::Get()->EndSession()
 #define CPR_PROFILER_TRACE_SCOPE(name) auto dtimer##__LINE__ = Copper::ScopedDebugTimer(name)
-#define CPR_PROFILER_TRACE_FUNCTION() auto dtimer##__LINE__ = Copper::ScopedDebugTimer(__FUNCSIG__)
+#define CPR_PROFILER_TRACE_FUNCTION() auto dtimer##__LINE__ = Copper::ScopedDebugTimer(__PRETTY_FUNCTION__)
 #else
 #define CPR_PROFILER_INIT()
 #define CPR_PROFILER_START_SESSION(name)

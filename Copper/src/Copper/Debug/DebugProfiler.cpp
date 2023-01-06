@@ -1,5 +1,6 @@
 #include "DebugProfiler.h"
-#include "Copper/Core/Core.h"
+
+#include <sstream>
 
 namespace Copper
 {

@@ -8,6 +8,7 @@
 #include "ImGuiHandler.h"
 #include "Platform.h"
 #include "Timestep.h"
+#include "Copper/Resource/Rms.h"
 
 namespace Copper
 {
@@ -23,6 +24,7 @@ Application::Application()
     m_ImGuiHandler = std::unique_ptr<ImGuiHandler>(ImGuiHandler::Create(*m_Window));
 
     Renderer::Init();
+    Rms::Init({});
 
     s_Instance = this;
 }
@@ -44,6 +46,8 @@ int Application::Run()
         for (Layer* layer : m_LayerStack)
             layer->OnImGuiUpdate();
         m_ImGuiHandler->End();
+
+        Rms::OnUpdate();
 
         m_Window->OnUpdate();
     }

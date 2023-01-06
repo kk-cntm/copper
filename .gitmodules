@@ -10,3 +10,6 @@
 [submodule "Copper/vendor/imgui"]
 	path = Copper/vendor/imgui
 	url = git@github.com:ocornut/imgui.git
+[submodule "Copper/vendor/pugixml"]
+	path = Copper/vendor/pugixml
+	url = https://github.com/zeux/pugixml.git

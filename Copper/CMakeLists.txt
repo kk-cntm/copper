@@ -50,6 +50,10 @@ set(SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/Platform.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/Timestep.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/Window.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/hash.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/hash.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/siphash.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/siphash.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Event/ApplicationEvent.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Event/Event.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Event/KeyEvent.h
@@ -72,7 +76,24 @@ set(SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/Texture.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/VertexArray.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/Renderer2D.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/Renderer2D.h)
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Renderer/Renderer2D.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Resource/BundleSerializer.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Resource/BundleSerializer.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Resource/BundleDeserializer.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Resource/BundleDeserializer.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Resource/FileMime.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Resource/FileMime.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Resource/Rms.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Resource/Rms.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Resource/Resource.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Resource/Resource.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Resource/context.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Resource/bundle-sections/versionsection.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Resource/bundle-sections/versionsection.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Resource/bundle-sections/metatablesection.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Resource/bundle-sections/metatablesection.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Resource/bundle-sections/assetssection.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Resource/bundle-sections/assetssection.cpp)
 
 if (CMAKE_BUILD_TYPE STREQUAL Debug)
     list(APPEND SOURCES
@@ -123,7 +144,8 @@ target_link_libraries(${PROJECT_NAME}
         glfw
         glm
         Glad
-        ImGui)
+        ImGui
+        pugixml)
 
 if (${CPR_PLATFORM} STREQUAL MacOS)
     find_library(CORE_FOUNDATION_LIB CoreFoundation)
@@ -144,13 +166,15 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/vendor/glfw/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/vendor/stb_image)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/vendor/glm)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/vendor/pugixml/src)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/glm)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/glfw)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/pugixml)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-fvisibility=hidden")
-set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-force_load libImGui.a ")
+set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-force_load ${CMAKE_CURRENT_BINARY_DIR}/libImGui.a ")
 
 target_compile_options(${PROJECT_NAME} PRIVATE "-fPIC" "-g")
 
