@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 set(CMAKE_CXX_STANDARD 17)
 
-project(Copper)
+project(CopperCore)
 
 set(IMGUI_SRC
         ${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui/imstb_truetype.h
@@ -172,6 +172,11 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/glm)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/glfw)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/pugixml)
+
+if (CPR_ENABLE_UNITTESTS)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/googletest)
+    add_subdirectory(tests)
+endif ()
 
 set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-fvisibility=hidden")
 set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-force_load ${CMAKE_CURRENT_BINARY_DIR}/libImGui.a ")

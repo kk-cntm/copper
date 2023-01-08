@@ -2,7 +2,7 @@
 
 set(CMAKE_CXX_STANDARD 17)
 
-project(CopperRoot)
+project(Copper)
 
 set(BUILD_TYPES "Debug" "Release" "Dist")
 set(CMAKE_CONFIGURATION_TYPES "${BUILD_TYPES}" CACHE STRING "list of supported configuration types" FORCE)
