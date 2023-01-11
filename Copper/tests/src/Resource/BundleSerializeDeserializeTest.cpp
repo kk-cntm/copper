@@ -10,8 +10,8 @@ namespace
 {
 const std::filesystem::path CACHE_DIR = ".testscache";
 const std::filesystem::path RESOURCES_DIR = "resources";
-const std::filesystem::path BUNDLE_PATH = CACHE_DIR.string() + '/' + "testbundle.bundle";
-const std::filesystem::path CONFIG_XML_PATH = RESOURCES_DIR.string() + '/' + "testbundle.xml";
+const std::filesystem::path BUNDLE_PATH = CACHE_DIR / "testbundle.bundle";
+const std::filesystem::path CONFIG_XML_PATH = RESOURCES_DIR / "testbundle.xml";
 } // namespace
 
 class BundleSerializeDeserializeTest : public BaseApplicationTest, public ::testing::WithParamInterface<std::string>
@@ -34,10 +34,7 @@ protected:
 
     void TearDown() override { std::filesystem::remove(BUNDLE_PATH); }
 
-    static std::filesystem::path GetResourcePath(const std::string& name)
-    {
-        return RESOURCES_DIR.string() + '/' + name;
-    }
+    static std::filesystem::path GetResourcePath(const std::string& name) { return RESOURCES_DIR / name; }
 
 protected:
     Copper::Ref<Copper::BundleSerializer> m_Serializer;

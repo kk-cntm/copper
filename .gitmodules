@@ -16,3 +16,6 @@
 [submodule "Copper/vendor/googletest"]
 	path = Copper/vendor/googletest
 	url = https://github.com/google/googletest.git
+[submodule "Copper/vendor/zlib"]
+	path = Copper/vendor/zlib
+	url = https://github.com/madler/zlib.git

@@ -15,7 +15,10 @@ public:
     enum Error : uint32_t
     {
         FailedToParseFileFormat = 1 << 0,
-        FailedToParseConfig = 1 << 1
+        FailedToParseConfig = 1 << 1,
+        FailedToWriteVersion = 1 << 2,
+        FailedToWriteAssets = 1 << 3,
+        FailedToWriteMetatable = 1 << 4,
     };
 
 public:
@@ -33,8 +36,8 @@ public:
     inline bool HasError() const { return m_ErrorFlags != 0; }
 
 private:
-    void ParseConfigFile();
-    void PackFiles();
+    bool ParseConfigFile();
+    bool PackFiles();
 
 private:
     uint32_t m_ErrorFlags{ 0 };

@@ -13,6 +13,13 @@ namespace Copper
 class COPPER_API BundleDeserializer
 {
 public:
+    enum Error : uint32_t
+    {
+        FailedToReadVersion = 1 << 0,
+        FailedToReadMetatable = 1 << 1,
+    };
+
+public:
     explicit BundleDeserializer(const std::filesystem::path& bundlePath);
 
     /*!
@@ -41,9 +48,11 @@ public:
     inline bool HasError() const { return m_ErrorFlags != 0; }
 
 private:
+    std::unordered_map<uint64_t, FileMeta> m_Metatable;
     uint32_t m_ErrorFlags{ 0 };
+    uint32_t m_VersionMajor{ 0 };
+    uint32_t m_VersionMinor{ 0 };
     std::filesystem::path m_BundlePath;
-    mutable BundleReadContext m_ReadContext;
 };
 
 } // namespace Copper

@@ -8,32 +8,26 @@
 
 namespace Copper
 {
+struct FileLayout
+{
+    uint64_t Offset;
+    uint64_t WrittenSize;
+    uint64_t OriginalSize;
+};
+
 struct ParsedFileData
 {
     FileMime::Type Mime;
-    std::string Path;
+    std::filesystem::path Path;
 };
 
 struct FileMeta
 {
     FileMime::Type Mime;
-    uint64_t Size;
+    uint64_t CompressedSize;
+    uint64_t OriginalSize;
     uint64_t Offset;
     std::string Path;
-};
-
-struct BundleReadContext
-{
-    uint32_t VersionMajor{ 0 };
-    uint32_t VersionMinor{ 0 };
-    std::unordered_map<uint64_t, FileMeta> Metatable;
-};
-
-struct BundleWriteContext
-{
-    uint32_t VersionMajor;
-    uint32_t VersionMinor;
-    std::vector<ParsedFileData> ParsedFilesData;
 };
 
 } // namespace Copper

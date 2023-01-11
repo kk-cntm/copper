@@ -145,7 +145,8 @@ target_link_libraries(${PROJECT_NAME}
         glm
         Glad
         ImGui
-        pugixml)
+        pugixml
+        zlib)
 
 if (${CPR_PLATFORM} STREQUAL MacOS)
     find_library(CORE_FOUNDATION_LIB CoreFoundation)
@@ -167,11 +168,13 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/vendor/stb_image)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/vendor/glm)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/vendor/pugixml/src)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/vendor/zlib)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/glm)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/glfw)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/pugixml)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/zlib)
 
 if (CPR_ENABLE_UNITTESTS)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/googletest)
