@@ -9,7 +9,8 @@ MetaTableSectionWriter::MetaTableSectionWriter(std::ofstream& stream, const std:
 {
 }
 
-bool MetaTableSectionWriter::Write(const std::vector<ParsedFileData>& files, const std::map<std::string, FileLayout>& filesLayout)
+bool MetaTableSectionWriter::Write(const std::vector<ParsedFileData>& files,
+                                   const std::map<std::string, FileLayout>& filesLayout)
 {
     CPR_CORE_ASSERT(files.size() == filesLayout.size(), "files and filesLayout size mismatch");
     const uint32_t metadataSize = CalculateMetadataSize(files);
@@ -23,42 +24,42 @@ bool MetaTableSectionWriter::Write(const std::vector<ParsedFileData>& files, con
         m_Stream.write((char*)&hash, sizeof(hash));
         if (m_Stream.bad() || m_Stream.fail())
         {
-            CPR_CORE_WARN("Failed to write hash for {0}", fileData.Path);
+            CPR_CORE_WARN("Failed to write hash for {0}: {1}", fileData.Path, std::strerror(errno));
             return false;
         }
 
         m_Stream.write(fileData.Path.c_str(), fileData.Path.string().length() + 1);
         if (m_Stream.bad() || m_Stream.fail())
         {
-            CPR_CORE_WARN("Failed to write file name for {0}", fileData.Path);
+            CPR_CORE_WARN("Failed to write file name for {0}: {1}", fileData.Path, std::strerror(errno));
             return false;
         }
 
         m_Stream.write((char*)&fileData.Mime, sizeof(fileData.Mime));
         if (m_Stream.bad() || m_Stream.fail())
         {
-            CPR_CORE_WARN("Failed to write file mime for {0}", fileData.Path);
+            CPR_CORE_WARN("Failed to write file mime for {0}: {1}", fileData.Path, std::strerror(errno));
             return false;
         }
 
         m_Stream.write((char*)&fileLayout.WrittenSize, sizeof(fileLayout.WrittenSize));
         if (m_Stream.bad() || m_Stream.fail())
         {
-            CPR_CORE_WARN("Failed to write file compressed size for {0}", fileData.Path);
+            CPR_CORE_WARN("Failed to write file compressed size for {0}: {1}", fileData.Path, std::strerror(errno));
             return false;
         }
 
         m_Stream.write((char*)&fileLayout.OriginalSize, sizeof(fileLayout.OriginalSize));
         if (m_Stream.bad() || m_Stream.fail())
         {
-            CPR_CORE_WARN("Failed to write original file size for {0}", fileData.Path);
+            CPR_CORE_WARN("Failed to write original file size for {0}: {1}", fileData.Path, std::strerror(errno));
             return false;
         }
 
         m_Stream.write((char*)&fileLayout.Offset, sizeof(fileLayout.Offset));
         if (m_Stream.bad() || m_Stream.fail())
         {
-            CPR_CORE_WARN("Failed to write file offset for {0}", fileData.Path);
+            CPR_CORE_WARN("Failed to write file offset for {0}: {1}", fileData.Path, std::strerror(errno));
             return false;
         }
     }
@@ -97,57 +98,63 @@ uint32_t MetaTableSectionWriter::CalculateMetadataSize(const std::vector<ParsedF
     return size;
 }
 
-MetaTableSectionReader::MetaTableSectionReader(std::ifstream& stream) : m_Stream(stream) {}
-
-std::unordered_map<uint64_t, FileMeta> MetaTableSectionReader::Read()
+MetaTableSectionReader::MetaTableSectionReader(std::ifstream& stream, const std::filesystem::path& bundlePath)
+    : m_Stream(stream), m_BundlePath(bundlePath)
 {
-    std::unordered_map<uint64_t, FileMeta> result;
+}
+
+std::unordered_map<uint64_t, Ref<Resource>> MetaTableSectionReader::Read()
+{
+    std::unordered_map<uint64_t, Ref<Resource>> result;
 
     m_Error = false;
 
     uint32_t metadataSize = 0;
     m_Stream.read((char*)&metadataSize, sizeof(metadataSize));
 
-    if (m_Stream.gcount() != sizeof(metadataSize))
+    if (m_Stream.fail() || m_Stream.bad())
     {
         m_Error = true;
+        CPR_CORE_WARN("Failed to read metadata size: {0}", std::strerror(errno));
         return {};
     }
 
-    char* metadata = (char*)std::malloc(metadataSize);
-    m_Stream.read(metadata, metadataSize);
+    auto metadata = MakeScoped<char[]>(metadataSize);
+    m_Stream.read(metadata.get(), metadataSize);
 
-    if (metadataSize != m_Stream.gcount())
+    if (m_Stream.fail() || m_Stream.bad())
     {
         m_Error = true;
-        CPR_CORE_WARN("");
+        CPR_CORE_WARN("Failed to read metadata: {0}", std::strerror(errno));
         return {};
     }
 
-    char* dataPtr = metadata;
-    while (dataPtr < metadata + metadataSize)
+    char* dataPtr = metadata.get();
+    while (dataPtr < metadata.get() + metadataSize)
     {
-        FileMeta meta;
+        Resource::Params params;
 
         const uint64_t hash = *((uint64_t*)dataPtr);
         dataPtr += sizeof(hash);
 
-        meta.Path = dataPtr;
+        params.Name = dataPtr;
         dataPtr += std::strlen(dataPtr) + 1;
 
-        meta.Mime = (FileMime::Type)(*dataPtr);
-        dataPtr += sizeof(meta.Mime);
+        params.Mime = (FileMime::Type)(*dataPtr);
+        dataPtr += sizeof(params.Mime);
 
-        meta.CompressedSize = *((uint64_t*)dataPtr);
-        dataPtr += sizeof(meta.CompressedSize);
+        params.CompressedSize = *((uint64_t*)dataPtr);
+        dataPtr += sizeof(params.CompressedSize);
 
-        meta.OriginalSize = *((uint64_t*)dataPtr);
-        dataPtr += sizeof(meta.OriginalSize);
+        params.Size = *((uint64_t*)dataPtr);
+        dataPtr += sizeof(params.Size);
 
-        meta.Offset = *((uint64_t*)dataPtr);
-        dataPtr += sizeof(meta.Offset);
+        params.Offset = *((uint64_t*)dataPtr);
+        dataPtr += sizeof(params.Offset);
 
-        result[hash] = meta;
+        params.BundlePath = m_BundlePath;
+
+        result[hash] = MakeRef<Resource>(params);
     }
 
     return result;

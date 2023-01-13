@@ -27,8 +27,6 @@ bool BundleSerializer::Serialize()
 
 bool BundleSerializer::ParseConfigFile()
 {
-    uint32_t errors = 0;
-
     pugi::xml_document doc;
     const pugi::xml_parse_result parseResult = doc.load_file(m_ConfigPath.c_str());
 

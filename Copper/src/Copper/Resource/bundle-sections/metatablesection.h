@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Copper/Resource/context.h"
+#include "Copper/Resource/Resource.h"
 
 namespace Copper
 {
@@ -29,13 +30,14 @@ private:
 class MetaTableSectionReader
 {
 public:
-    explicit MetaTableSectionReader(std::ifstream& stream);
+    explicit MetaTableSectionReader(std::ifstream& stream, const std::filesystem::path& bundlePath);
 
-    std::unordered_map<uint64_t, FileMeta> Read();
+    std::unordered_map<uint64_t, Ref<Resource>> Read();
     inline bool HasError() const { return m_Error; }
 
 private:
     std::ifstream& m_Stream;
+    std::filesystem::path m_BundlePath;
     bool m_Error{ false };
 };
 } // namespace Copper

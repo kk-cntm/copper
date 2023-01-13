@@ -1,8 +1,6 @@
 #include "BundleDeserializer.h"
-#include "context.h"
 #include "bundle-sections/versionsection.h"
 #include "bundle-sections/metatablesection.h"
-#include "bundle-sections/assetssection.h"
 #include "Copper/Core/hash.h"
 #include "Copper/Debug/DebugProfiler.h"
 
@@ -14,8 +12,7 @@ bool BundleDeserializer::Deserialize()
 {
     CPR_PROFILER_TRACE_SCOPE("Deserialize bundle: ");
 
-    std::ifstream stream;
-    stream.open(m_BundlePath, std::ifstream::binary);
+    std::ifstream stream(m_BundlePath, std::ifstream::binary);
 
     VersionSectionReader versionReader(stream);
     const auto& [versionMajor, versionMinor] = versionReader.Read();
@@ -28,7 +25,7 @@ bool BundleDeserializer::Deserialize()
     m_VersionMajor = versionMajor;
     m_VersionMinor = versionMinor;
 
-    MetaTableSectionReader metatableReader(stream);
+    MetaTableSectionReader metatableReader(stream, m_BundlePath);
     m_Metatable = metatableReader.Read();
     if (metatableReader.HasError())
     {
@@ -45,23 +42,7 @@ Ref<Resource> BundleDeserializer::GetResource(const std::string& name) const
     if (m_Metatable.find(hash) == m_Metatable.cend())
         return nullptr;
 
-    const FileMeta& meta = m_Metatable.at(hash);
-
-    char* compressedBlob = (char*)std::malloc(meta.CompressedSize);
-    char* blob = (char*)std::malloc(meta.OriginalSize);
-
-    std::ifstream stream(m_BundlePath, std::ifstream::binary);
-    stream.seekg(meta.Offset, std::ifstream::beg);
-    stream.read(compressedBlob, meta.CompressedSize);
-
-    const auto& [error, fileSize] = AssetsSectionReader::Decompress(compressedBlob, blob, meta.CompressedSize,
-                                                                    meta.OriginalSize);
-
-    std::free(compressedBlob);
-
-    CPR_CORE_ASSERT(!error && fileSize == meta.OriginalSize, "File size mismatch before and after compression");
-
-    return MakeRef<Resource>(name, meta.OriginalSize, blob, meta.Mime);
+    return m_Metatable.at(hash);
 }
 
 } // namespace Copper

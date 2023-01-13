@@ -48,7 +48,7 @@ public:
     inline bool HasError() const { return m_ErrorFlags != 0; }
 
 private:
-    std::unordered_map<uint64_t, FileMeta> m_Metatable;
+    std::unordered_map<uint64_t, Ref<Resource>> m_Metatable;
     uint32_t m_ErrorFlags{ 0 };
     uint32_t m_VersionMajor{ 0 };
     uint32_t m_VersionMinor{ 0 };

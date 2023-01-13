@@ -2,6 +2,7 @@
 
 #include "FileMime.h"
 #include "Copper/Core/Core.h"
+#include "ResourceReader.h"
 
 namespace Copper
 {
@@ -13,14 +14,26 @@ class COPPER_API Resource
 {
 public:
     /*!
-     * \brief Resource:
-     * \param name - resource name
-     * \param size - resource size
-     * \param blob - resource blob. MUST BE IN HEAP
-     * \param mome - resouce mime type (e.g image/bmp)
+     * \brief Resource::Params:
+     * \param Name - resource name
+     * \param Size - resource size
+     * \param BundlePath - path to the bundle path the resouce belong to
+     * \param Offset - resource offset in bundle file in bytes
+     * \param Mime - resouce mime type (e.g image/bmp)
      */
-    explicit Resource(const std::string& name, uint64_t size, const char* blob, FileMime::Type mime);
-    ~Resource();
+    struct Params
+    {
+        std::string Name;
+        std::filesystem::path BundlePath;
+        uint64_t Size;
+        uint64_t CompressedSize;
+        uint64_t Offset;
+        FileMime::Type Mime;
+    };
+
+public:
+    Resource();
+    explicit Resource(const Params& params);
 
     /*!
      * \brief Resource::GetName
@@ -35,22 +48,27 @@ public:
     inline uint64_t GetSize() const { return m_Size; }
 
     /*!
-     * \brief Resource::GetBlob:
-     * \returns actual data blob of the asset
-     */
-    inline const char* GetBlob() const { return m_Blob; }
-
-    /*!
      * \brief Resource::GetMime:
      * \returns actual mime type of the asset
      */
     inline FileMime::Type GetMime() const { return m_Mime; }
 
+    /*!
+     * \brief Resource::CreateReader:
+     * \returns creates chunk reader for current resource
+     */
+    inline ResourceReader CreateReader() const
+    {
+        return ResourceReader(m_BundlePath, m_CompressedSize, m_Offset);
+    };
+
 private:
     std::string m_Name;
-    const uint64_t m_Size;
-    const char* m_Blob;
-    const FileMime::Type m_Mime;
+    std::filesystem::path m_BundlePath;
+    uint64_t m_Offset;
+    uint64_t m_Size;
+    uint64_t m_CompressedSize;
+    FileMime::Type m_Mime;
 };
 
 } // namespace Copper

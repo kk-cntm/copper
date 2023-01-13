@@ -87,6 +87,8 @@ set(SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Resource/Rms.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Resource/Resource.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Resource/Resource.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Resource/ResourceReader.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Resource/ResourceReader.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Resource/context.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Resource/bundle-sections/versionsection.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Resource/bundle-sections/versionsection.cpp

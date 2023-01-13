@@ -21,10 +21,10 @@ protected:
     {
         std::filesystem::create_directory(CACHE_DIR);
 
-        m_Serializer = Copper::MakeRef<Copper::BundleSerializer>(CONFIG_XML_PATH, BUNDLE_PATH);
-        m_Serializer->Serialize();
+        auto serializer = Copper::MakeRef<Copper::BundleSerializer>(CONFIG_XML_PATH, BUNDLE_PATH);
+        serializer->Serialize();
 
-        ASSERT_FALSE(m_Serializer->HasError());
+        ASSERT_FALSE(serializer->HasError());
 
         m_Deserializer = Copper::MakeRef<Copper::BundleDeserializer>(BUNDLE_PATH);
         m_Deserializer->Deserialize();
@@ -36,21 +36,41 @@ protected:
 
     static std::filesystem::path GetResourcePath(const std::string& name) { return RESOURCES_DIR / name; }
 
-protected:
-    Copper::Ref<Copper::BundleSerializer> m_Serializer;
-    Copper::Ref<Copper::BundleDeserializer> m_Deserializer;
-};
-
-::testing::AssertionResult compareBlobs(const char* blob1, const char* blob2, uint64_t size)
-{
-    for (int i = 0; i < size; ++i)
+    ::testing::AssertionResult compareBlobs(std::ifstream& stream, Copper::ResourceReader& reader, uint64_t size)
     {
-        if (*(blob1 + i) != *(blob2 + i))
-            return ::testing::AssertionFailure() << "at " << i << " byte";
+        auto readerBuffer = Copper::MakeScoped<char[]>(reader.GetChunkSize());
+        auto streamBuffer = Copper::MakeScoped<char[]>(reader.GetChunkSize());
+
+        uint64_t totalBytesRead = 0;
+        while (!reader.IsEof())
+        {
+            const uint64_t bytesCount = reader.ReadChunk(readerBuffer);
+
+            if (bytesCount == 0)
+                return ::testing::AssertionFailure() << "Expected bytesCount to be greater than 0";
+
+            if (reader.HasError())
+                return ::testing::AssertionFailure() << "Could not read a chunk";
+
+            stream.read(streamBuffer.get(), bytesCount);
+            if (stream.fail() || stream.bad())
+                return ::testing::AssertionFailure() << std::strerror(errno);
+
+            for (int i = 0; i < bytesCount; ++i)
+            {
+                if (*(streamBuffer.get() + i) != *(readerBuffer.get() + i))
+                    return ::testing::AssertionFailure() << "at " << i << " byte";
+            }
+
+            totalBytesRead += bytesCount;
+        }
+
+        return ::testing::AssertionSuccess();
     }
 
-    return ::testing::AssertionSuccess();
-}
+protected:
+    Copper::Ref<Copper::BundleDeserializer> m_Deserializer;
+};
 
 TEST_P(BundleSerializeDeserializeTest, shouldSerializeAndDeserializeFileWithoutMangling)
 {
@@ -63,10 +83,9 @@ TEST_P(BundleSerializeDeserializeTest, shouldSerializeAndDeserializeFileWithoutM
     ASSERT_EQ(originalFileSize, resource->GetSize());
 
     std::ifstream originalFileStream(originalFilePath, std::ifstream::binary);
-    char* originalBlob = (char*)std::malloc(originalFileSize);
-    originalFileStream.read(originalBlob, originalFileSize);
+    auto reader = resource->CreateReader();
 
-    ASSERT_TRUE(compareBlobs(originalBlob, resource->GetBlob(), originalFileSize));
+    ASSERT_TRUE(compareBlobs(originalFileStream, reader, originalFileSize));
 }
 
 // here goes all expected files from bundle

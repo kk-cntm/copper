@@ -47,8 +47,6 @@ int Application::Run()
             layer->OnImGuiUpdate();
         m_ImGuiHandler->End();
 
-        Rms::OnUpdate();
-
         m_Window->OnUpdate();
     }
 
