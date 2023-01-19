@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Copper/Resource/context.h"
+#include "Copper/Core/io/FileWriteStream.h"
 
 namespace Copper
 {
@@ -12,7 +13,7 @@ namespace Copper
 class AssetsSectionWriter
 {
 public:
-    AssetsSectionWriter(std::ofstream& stream, const std::filesystem::path& workingDir);
+    AssetsSectionWriter(FileWriteStream& stream, const std::filesystem::path& workingDir);
 
     bool Write(const std::vector<ParsedFileData>& files);
     const std::map<std::string, FileLayout>& GetFilesLayout() const;
@@ -20,7 +21,7 @@ public:
 private:
     std::map<std::string, FileLayout> m_FilesLayout;
     const std::filesystem::path m_WorkingDir;
-    std::ofstream& m_Stream;
+    FileWriteStream& m_Stream;
 };
 
 /*!

@@ -2,6 +2,7 @@
 
 #include "Copper/Resource/context.h"
 #include "Copper/Resource/Resource.h"
+#include "Copper/Core/io/IWriteStream.h"
 
 namespace Copper
 {
@@ -12,14 +13,14 @@ namespace Copper
 class MetaTableSectionWriter
 {
 public:
-    explicit MetaTableSectionWriter(std::ofstream& stream, const std::filesystem::path& workingDir);
+    explicit MetaTableSectionWriter(IWriteStream& stream, const std::filesystem::path& workingDir);
 
     bool Write(const std::vector<ParsedFileData>& files, const std::map<std::string, FileLayout>& filesLayout);
 
     static uint32_t CalculateMetadataSize(const std::vector<ParsedFileData>& parsedFilesData);
 
 private:
-    std::ofstream& m_Stream;
+    IWriteStream& m_Stream;
     std::filesystem::path m_WorkingDir;
 };
 

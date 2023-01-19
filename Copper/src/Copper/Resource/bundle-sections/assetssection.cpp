@@ -1,5 +1,8 @@
 #include "assetssection.h"
 #include "Copper/Core/Log.h"
+#include "Copper/Core/io/FileReadStream.h"
+#include "Copper/Core/io/ZlibCompresser.h"
+#include "Copper/Core/io/FileWriteStream.h"
 
 #include <zlib.h>
 
@@ -10,80 +13,57 @@ const uint64_t COMPRESSING_CHUNK_SIZE = 1024 * 256;
 
 namespace Copper
 {
-AssetsSectionWriter::AssetsSectionWriter(std::ofstream& stream, const std::filesystem::path& workingDir)
+AssetsSectionWriter::AssetsSectionWriter(FileWriteStream& stream, const std::filesystem::path& workingDir)
     : m_Stream(stream), m_WorkingDir(workingDir)
 {
 }
 
 bool AssetsSectionWriter::Write(const std::vector<ParsedFileData> &files)
 {
-    auto originalFileBuffer = MakeScoped<char[]>(COMPRESSING_CHUNK_SIZE);
-    auto compressingBuffer = MakeScoped<char[]>(COMPRESSING_CHUNK_SIZE);
+    const uint64_t bufferSize = 1024 * 128;
+    auto buffer = MakeScoped<char[]>(bufferSize);
 
     for (const auto& fileData : files)
     {
         const std::filesystem::path filePath = m_WorkingDir / fileData.Path;
 
-        std::ifstream bundleFileStream(filePath, std::ios::binary | std::ios::in);
+        FileReadStream reader(filePath);
 
-        bundleFileStream.seekg(0, std::ifstream::end);
-        const uint64_t fileSize = bundleFileStream.tellg();
-        bundleFileStream.seekg(0, std::ifstream::beg);
+        const auto zlibProcessor = MakeRef<ZlibCompresser>();
+        m_Stream.AddDataProcessor(zlibProcessor);
 
-        const uint64_t fileOffset = m_Stream.tellp();
+        const uint64_t prevWriterPos = m_Stream.GetPos();
+        const uint64_t prevReaderPos = reader.GetPos();
 
-        z_stream strm;
-        strm.zalloc = Z_NULL;
-        strm.zfree = Z_NULL;
-        strm.opaque = Z_NULL;
-
-        if (deflateInit(&strm, Z_DEFAULT_COMPRESSION) != Z_OK)
+        uint64_t totalBytesRead = 0;
+        uint64_t totalBytesWritten = 0;
+        while (!reader.IsEof())
         {
-            deflateEnd(&strm);
-            CPR_CORE_WARN("Unable to compress file {0}", filePath.string());
-            return false;
+            const uint64_t bytesRead = reader.Read(buffer.get(), bufferSize);
+            if (reader.HasError())
+            {
+                CPR_CORE_WARN("Failed to read chunk at {} pos", reader.GetPos());
+                return false;
+            }
+
+            totalBytesRead += bytesRead;
+            totalBytesWritten += m_Stream.Write(buffer.get(), bytesRead, reader.IsEof());
+
+            if (m_Stream.HasError())
+            {
+                CPR_CORE_WARN("Failed to write chunk at {} pos", m_Stream.GetPos());
+                return false;
+            }
         }
 
-        uint64_t bytesWrittenCount = 0;
-        while (!bundleFileStream.eof())
-        {
-            bundleFileStream.read(originalFileBuffer.get(), COMPRESSING_CHUNK_SIZE);
-            const auto fileChunkReadBytesCount = bundleFileStream.gcount();
+        m_Stream.DeleteDataProcessor(zlibProcessor);
 
-            if (!fileChunkReadBytesCount)
-            {
-                CPR_CORE_WARN("Failed to read data from original file {0}", filePath.string());
-                deflateEnd(&strm);
-                return false;
-            }
+        FileLayout layout;
+        layout.Offset = prevWriterPos;
+        layout.OriginalSize = totalBytesRead;
+        layout.WrittenSize = totalBytesWritten;
 
-            strm.avail_in = fileChunkReadBytesCount;
-            strm.next_in = reinterpret_cast<unsigned char*>(originalFileBuffer.get());
-
-            strm.avail_out = COMPRESSING_CHUNK_SIZE;
-            strm.next_out = reinterpret_cast<unsigned char*>(compressingBuffer.get());
-
-            if (deflate(&strm, bundleFileStream.eof() ? Z_FINISH : Z_NO_FLUSH) == Z_STREAM_ERROR)
-            {
-                CPR_CORE_WARN("Unable to compress file {0}", filePath.string());
-                deflateEnd(&strm);
-                return false;
-            }
-
-            m_Stream.write(compressingBuffer.get(), COMPRESSING_CHUNK_SIZE - strm.avail_out);
-            if (m_Stream.bad() || m_Stream.fail())
-            {
-                CPR_CORE_WARN("Failed to write compressed data to the bundle {0}", filePath.string());
-                deflateEnd(&strm);
-                return false;
-            }
-
-            bytesWrittenCount += COMPRESSING_CHUNK_SIZE - strm.avail_out;
-        }
-
-        deflateEnd(&strm);
-
-        m_FilesLayout[fileData.Path] = { fileOffset, bytesWrittenCount, fileSize };
+        m_FilesLayout[fileData.Path] = layout;
     }
 
     return true;

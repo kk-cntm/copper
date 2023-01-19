@@ -4,19 +4,19 @@
 
 namespace Copper
 {
-VersionSectionWriter::VersionSectionWriter(std::ofstream& stream) : m_Stream(stream) {}
+VersionSectionWriter::VersionSectionWriter(IWriteStream& stream) : m_Stream(stream) {}
 
 bool VersionSectionWriter::Write(uint32_t major, uint32_t minor)
 {
-    m_Stream.write((char*)&major, sizeof(major));
-    if (m_Stream.bad() || m_Stream.fail())
+    m_Stream.Write((char*)&major, sizeof(major), false);
+    if (m_Stream.HasError())
     {
         CPR_CORE_WARN("Failed to write major version: {0}", std::strerror(errno));
         return false;
     }
 
-    m_Stream.write((char*)&minor, sizeof(minor));
-    if (m_Stream.bad() || m_Stream.fail())
+    m_Stream.Write((char*)&minor, sizeof(minor), false);
+    if (m_Stream.HasError())
     {
         CPR_CORE_WARN("Failed to write minor version: {0}", std::strerror(errno));
         return false;

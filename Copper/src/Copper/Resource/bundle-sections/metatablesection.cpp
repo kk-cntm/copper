@@ -4,7 +4,7 @@
 
 namespace Copper
 {
-MetaTableSectionWriter::MetaTableSectionWriter(std::ofstream& stream, const std::filesystem::path& workingDir)
+MetaTableSectionWriter::MetaTableSectionWriter(IWriteStream& stream, const std::filesystem::path& workingDir)
     : m_Stream(stream), m_WorkingDir(workingDir)
 {
 }
@@ -14,50 +14,50 @@ bool MetaTableSectionWriter::Write(const std::vector<ParsedFileData>& files,
 {
     CPR_CORE_ASSERT(files.size() == filesLayout.size(), "files and filesLayout size mismatch");
     const uint32_t metadataSize = CalculateMetadataSize(files);
-    m_Stream.write((char*)&metadataSize, sizeof(metadataSize));
+    m_Stream.Write((char*)&metadataSize, sizeof(metadataSize), false);
 
     for (const auto& fileData : files)
     {
         const auto fileLayout = filesLayout.at(fileData.Path);
 
         const uint64_t hash = getHash(fileData.Path.c_str());
-        m_Stream.write((char*)&hash, sizeof(hash));
-        if (m_Stream.bad() || m_Stream.fail())
+        m_Stream.Write((char*)&hash, sizeof(hash), false);
+        if (m_Stream.HasError())
         {
             CPR_CORE_WARN("Failed to write hash for {0}: {1}", fileData.Path, std::strerror(errno));
             return false;
         }
 
-        m_Stream.write(fileData.Path.c_str(), fileData.Path.string().length() + 1);
-        if (m_Stream.bad() || m_Stream.fail())
+        m_Stream.Write(fileData.Path.c_str(), fileData.Path.string().length() + 1, false);
+        if (m_Stream.HasError())
         {
             CPR_CORE_WARN("Failed to write file name for {0}: {1}", fileData.Path, std::strerror(errno));
             return false;
         }
 
-        m_Stream.write((char*)&fileData.Mime, sizeof(fileData.Mime));
-        if (m_Stream.bad() || m_Stream.fail())
+        m_Stream.Write((char*)&fileData.Mime, sizeof(fileData.Mime), false);
+        if (m_Stream.HasError())
         {
             CPR_CORE_WARN("Failed to write file mime for {0}: {1}", fileData.Path, std::strerror(errno));
             return false;
         }
 
-        m_Stream.write((char*)&fileLayout.WrittenSize, sizeof(fileLayout.WrittenSize));
-        if (m_Stream.bad() || m_Stream.fail())
+        m_Stream.Write((char*)&fileLayout.WrittenSize, sizeof(fileLayout.WrittenSize), false);
+        if (m_Stream.HasError())
         {
             CPR_CORE_WARN("Failed to write file compressed size for {0}: {1}", fileData.Path, std::strerror(errno));
             return false;
         }
 
-        m_Stream.write((char*)&fileLayout.OriginalSize, sizeof(fileLayout.OriginalSize));
-        if (m_Stream.bad() || m_Stream.fail())
+        m_Stream.Write((char*)&fileLayout.OriginalSize, sizeof(fileLayout.OriginalSize), false);
+        if (m_Stream.HasError())
         {
             CPR_CORE_WARN("Failed to write original file size for {0}: {1}", fileData.Path, std::strerror(errno));
             return false;
         }
 
-        m_Stream.write((char*)&fileLayout.Offset, sizeof(fileLayout.Offset));
-        if (m_Stream.bad() || m_Stream.fail())
+        m_Stream.Write((char*)&fileLayout.Offset, sizeof(fileLayout.Offset), false);
+        if (m_Stream.HasError())
         {
             CPR_CORE_WARN("Failed to write file offset for {0}: {1}", fileData.Path, std::strerror(errno));
             return false;

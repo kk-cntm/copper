@@ -54,6 +54,19 @@ set(SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/hash.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/siphash.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/siphash.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/io/IReadStream.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/io/IWriteStream.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/io/IDataProcessor.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/io/ZlibCompresser.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/io/ZlibCompresser.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/io/FileReadStream.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/io/FileReadStream.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/io/FileWriteStream.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/io/FileWriteStream.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/io/WriteStreamBase.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/io/WriteStreamBase.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/io/ReadStreamBase.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Core/io/ReadStreamBase.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Event/ApplicationEvent.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Event/Event.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Copper/Event/KeyEvent.h

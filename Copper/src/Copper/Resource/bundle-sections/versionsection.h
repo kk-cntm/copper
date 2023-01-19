@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Copper/Core/io/IWriteStream.h"
+
 #include <stdint.h>
 #include <iosfwd>
 #include <utility>
@@ -13,12 +15,12 @@ namespace Copper
 class VersionSectionWriter
 {
 public:
-    explicit VersionSectionWriter(std::ofstream& stream);
+    explicit VersionSectionWriter(IWriteStream& stream);
 
     bool Write(uint32_t major, uint32_t minor);
 
 private:
-    std::ofstream& m_Stream;
+    IWriteStream& m_Stream;
 };
 
 /*!
